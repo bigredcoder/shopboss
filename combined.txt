@@ -1,0 +1,6083 @@
+# FILE: rds.yaml
+instances:
+- az: us-east-1a
+  backup_window: 07:59-08:29
+  class: db.r5.12xlarge
+  cloudwatch_logs:
+  - audit
+  - error
+  - general
+  - slowquery
+  cluster_id: production-cluster
+  endpoint: production.cczxexsz3oly.us-east-1.rds.amazonaws.com
+  engine: aurora-mysql
+  engine_version: 8.0.mysql_aurora.3.05.2
+  id: production
+  maintenance_window: tue:09:17-tue:09:47
+  performance_insights: true
+  port: 3307
+  publicly_accessible: false
+  status: available
+  storage_encrypted: true
+  subnets:
+  - subnet-0dd43bb13d12dff57
+  - subnet-0fd416bcd058b1ec3
+  - subnet-095ef989255a76742
+  tags:
+    Backup: 'True'
+  vpc_id: vpc-0763a38927252d771
+- az: us-east-1a
+  backup_window: 07:59-08:29
+  class: db.r5.8xlarge
+  cloudwatch_logs:
+  - audit
+  - error
+  - general
+  - slowquery
+  cluster_id: production-ms-cluster
+  endpoint: production-ms.cczxexsz3oly.us-east-1.rds.amazonaws.com
+  engine: aurora-mysql
+  engine_version: 8.0.mysql_aurora.3.05.2
+  id: production-ms
+  maintenance_window: tue:07:30-tue:08:00
+  performance_insights: true
+  port: 3307
+  publicly_accessible: false
+  status: available
+  storage_encrypted: true
+  subnets:
+  - subnet-0dd43bb13d12dff57
+  - subnet-0fd416bcd058b1ec3
+  - subnet-095ef989255a76742
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- az: us-east-1a
+  backup_window: 07:59-08:29
+  class: db.r5.large
+  cloudwatch_logs: []
+  cluster_id: staging-022525-cluster
+  endpoint: staging-022525.cczxexsz3oly.us-east-1.rds.amazonaws.com
+  engine: aurora-mysql
+  engine_version: 8.0.mysql_aurora.3.05.2
+  id: staging-022525
+  maintenance_window: mon:07:43-mon:08:13
+  performance_insights: false
+  port: 3307
+  publicly_accessible: false
+  status: available
+  storage_encrypted: true
+  subnets:
+  - subnet-0dd43bb13d12dff57
+  - subnet-0fd416bcd058b1ec3
+  - subnet-095ef989255a76742
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- az: us-east-1a
+  backup_window: 07:59-08:29
+  class: db.r5.large
+  cloudwatch_logs: []
+  cluster_id: staging-ms-10092024-cluster
+  endpoint: staging-ms-10092024.cczxexsz3oly.us-east-1.rds.amazonaws.com
+  engine: aurora-mysql
+  engine_version: 8.0.mysql_aurora.3.05.2
+  id: staging-ms-10092024
+  maintenance_window: sun:03:02-sun:03:32
+  performance_insights: false
+  port: 3307
+  publicly_accessible: false
+  status: available
+  storage_encrypted: true
+  subnets:
+  - subnet-0dd43bb13d12dff57
+  - subnet-0fd416bcd058b1ec3
+  - subnet-095ef989255a76742
+  tags:
+    Backup: 'True'
+  vpc_id: vpc-0763a38927252d771
+
+
+# FILE: redis.yaml
+redis:
+- created_at: 2025-03-24T14:53Z
+  engine_version: '7.1'
+  mode: serverless
+  name: production
+  notes: Production Redis (serverless), as seen in ElastiCache console
+  status: available
+- created_at: 2025-03-24T14:41Z
+  engine_version: '7.1'
+  mode: serverless
+  name: staging4
+  notes: Staging Redis (serverless), as seen in ElastiCache console
+  status: available
+
+
+# FILE: script-server.yaml
+instance_id: i-013c8b7f3f3a3d4d3
+jobs:
+- arguments: C:\Users\cboshaw\Desktop\crons\adpimport.php
+  command: C:\php\php.exe
+  name: ADP Import
+  schedule:
+  - repeat: PT10M
+    start: '2023-05-11T20:59:00'
+    type: CalendarTrigger
+- arguments: /C C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile
+    -NonInteractive -NoLogo -ExecutionPolicy Unrestricted -File "C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeInstance.ps1"
+  command: C:\Windows\System32\cmd.exe
+  name: Amazon Ec2 Launch - Instance Initialization
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\apination_ms.php
+  command: C:\php\php.exe
+  name: Apination MS
+  schedule:
+  - repeat: PT5M
+    start: '2025-01-22T12:40:51'
+    type: TimeTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\apination.php
+  command: C:\php\php.exe
+  name: Apination
+  schedule:
+  - repeat: PT5M
+    start: '2023-08-21T07:43:49'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\Nightly Scripts\apptremindersEnterprise.vbs"'
+  command: C:\Windows\System32\wscript.exe
+  name: Appt Reminder Enterprise
+  schedule:
+  - repeat: null
+    start: '2021-11-04T15:00:00'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\Nightly Scripts\apptreminderstest.vbs"'
+  command: C:\Windows\System32\wscript.exe
+  name: Appt Reminder Test
+  schedule:
+  - repeat: PT1H
+    start: '2024-08-16T12:00:00'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\Nightly Scripts\apptreminders.vbs"'
+  command: C:\Windows\System32\wscript.exe
+  name: Appt Reminder
+  schedule:
+  - repeat: PT1H
+    start: '2024-08-28T12:00:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\archive.php
+  command: C:\php\php.exe
+  name: Archive
+  schedule:
+  - repeat: null
+    start: '2024-06-04T23:00:50'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\backoffice_manual.php
+  command: C:\php\php.exe
+  name: Backoffice Manual
+  schedule:
+  - repeat: PT5M
+    start: '2023-03-07T14:35:01'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\EnterpriseScripts\inventory.vbs"'
+  command: C:\Windows\System32\wscript.exe
+  name: BC Inventory
+  schedule:
+  - repeat: PT10M
+    start: '2021-05-18T03:00:00'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\EnterpriseScripts\recommend.vbs"'
+  command: C:\Windows\System32\wscript.exe
+  name: BC Recommends
+  schedule:
+  - repeat: null
+    start: '2021-05-17T22:55:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\bluesnap.php
+  command: C:\php\php.exe
+  name: Bluesnap Payments
+  schedule:
+  - repeat: PT10M
+    start: '2022-03-28T15:20:00'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\Nightly Scripts\carfax-sbe.vbs"'
+  command: cscript
+  name: Carfax SBE Upload
+  schedule:
+  - repeat: null
+    start: '2016-11-10T23:10:00'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\Nightly Scripts\carfax.vbs"'
+  command: cscript
+  name: Carfax Upload
+  schedule:
+  - repeat: null
+    start: '2016-10-06T23:00:00'
+    type: CalendarTrigger
+- arguments: ''
+  command: '"C:\Users\cboshaw\Desktop\Nightly Scripts\Cavan\weeklynumbers.vbs"'
+  name: Cavan email numbers
+  schedule:
+  - repeat: null
+    start: '2021-04-26T05:00:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\dasrep.php
+  command: C:\php\php.exe
+  name: DAS Rep.com
+  schedule:
+  - repeat: null
+    start: '2025-03-10T14:00:55'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\scorecard.php
+  command: C:\php\php.exe
+  name: DAS Scorecard
+  schedule:
+  - repeat: null
+    start: '2022-06-10T05:00:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\dascsv.php
+  command: C:\php\php.exe
+  name: DAS SFTP
+  schedule:
+  - repeat: null
+    start: '2023-12-19T23:50:20'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\archiving.php
+  command: C:\php\php.exe
+  name: Database Archiving
+  schedule:
+  - repeat: null
+    start: '2024-12-27T23:00:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\enterprise_notifications.php
+  command: C:\php\php.exe
+  name: Enterprise Notifications
+  schedule:
+  - repeat: null
+    start: '2021-08-04T22:00:00'
+    type: CalendarTrigger
+- arguments: '"C:\Users\cboshaw\Desktop\Nightly Scripts\campaignfollowup.vbs"'
+  command: C:\Windows\System32\wscript.exe
+  name: Follow Up Campaigns
+  schedule:
+  - repeat: null
+    start: '2017-06-09T12:00:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\futureactions.php
+  command: C:\php\php.exe
+  name: Future Actions
+  schedule:
+  - repeat: null
+    start: '2022-04-27T00:01:50'
+    type: CalendarTrigger
+- arguments: --wake --system
+  command: '"C:\Program Files (x86)\Google\GoogleUpdater\136.0.7079.0\updater.exe"'
+  name: GoogleSystem_GoogleUpdater_GoogleUpdaterTaskSystem136.0.7079.0{3FF38EB1-EB94-4584-AFC0-93A4CAF34D7C}
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+  - repeat: PT1H
+    start: '2025-03-25T14:15:41-07:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\matco.php
+  command: C:\php\php.exe
+  name: Matco Report
+  schedule:
+  - repeat: null
+    start: '2023-06-02T06:00:23'
+    type: CalendarTrigger
+- arguments: /prewarm
+  command: C:\Program Files\Microsoft Office\root\Office16\sdxhelper.exe
+  name: Microsoft_Office_Office Apps Prewarm Recurring
+  schedule:
+  - repeat: PT4H
+    start: '2024-12-10T04:00:00'
+    type: CalendarTrigger
+- arguments: /prewarm
+  command: C:\Program Files\Microsoft Office\root\Office16\sdxhelper.exe
+  name: Microsoft_Office_Office Apps Prewarm
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+  - repeat: null
+    start: null
+    type: SessionStateChangeTrigger
+- arguments: /frequentupdate SCHEDULEDTASK displaylevel=False
+  command: C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe
+  name: Microsoft_Office_Office Automatic Updates 2.0
+  schedule:
+  - repeat: null
+    start: '2010-12-16T03:00:00'
+    type: CalendarTrigger
+  - repeat: null
+    start: null
+    type: LogonTrigger
+  - repeat: null
+    start: null
+    type: IdleTrigger
+- arguments: /WatchService
+  command: C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe
+  name: Microsoft_Office_Office ClickToRun Service Monitor
+  schedule:
+  - repeat: P1D
+    start: '2010-12-16T04:00:00'
+    type: CalendarTrigger
+- arguments: /onlogon
+  command: C:\Program Files\Microsoft Office\root\Office16\sdxhelper.exe
+  name: Microsoft_Office_Office Feature Updates Logon
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+  - repeat: null
+    start: null
+    type: SessionStateChangeTrigger
+- arguments: ''
+  command: C:\Program Files\Microsoft Office\root\Office16\sdxhelper.exe
+  name: Microsoft_Office_Office Feature Updates
+  schedule:
+  - repeat: null
+    start: '2017-01-01T02:10:00'
+    type: CalendarTrigger
+  - repeat: null
+    start: '2017-01-01T06:10:00'
+    type: CalendarTrigger
+  - repeat: null
+    start: '2017-01-01T10:10:00'
+    type: CalendarTrigger
+  - repeat: null
+    start: '2017-01-01T14:10:00'
+    type: CalendarTrigger
+  - repeat: null
+    start: '2017-01-01T18:10:00'
+    type: CalendarTrigger
+  - repeat: null
+    start: '2017-01-01T22:10:00'
+    type: CalendarTrigger
+- arguments: ''
+  command: C:\Program Files\Microsoft Office\root\VFS\ProgramFilesCommonX64\Microsoft
+    Shared\Office16\operfmon.exe
+  name: Microsoft_Office_Office Performance Monitor
+  schedule:
+  - repeat: null
+    start: null
+    type: EventTrigger
+- arguments: ''
+  command: '%windir%\system32\appidpolicyconverter.exe'
+  name: Microsoft_Windows_AppID_PolicyConverter
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\appidcertstorecheck.exe'
+  name: Microsoft_Windows_AppID_VerifiedPublisherCertStoreCheck
+  schedule:
+  - repeat: P1D
+    start: null
+    type: BootTrigger
+- arguments: ''
+  command: '%windir%\system32\compattelrunner.exe'
+  name: Microsoft_Windows_Application Experience_Microsoft Compatibility Appraiser
+  schedule:
+  - repeat: P1D
+    start: '2008-09-01T03:00:00'
+    type: TimeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: -maintenance
+  command: '%windir%\system32\compattelrunner.exe'
+  name: Microsoft_Windows_Application Experience_ProgramDataUpdater
+  schedule: []
+- arguments: Startupscan.dll,SusRunTask
+  command: '%windir%\system32\rundll32.exe'
+  name: Microsoft_Windows_Application Experience_StartupAppTask
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\AppHostRegistrationVerifier.exe'
+  name: Microsoft_Windows_ApplicationData_appuriverifierdaily
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\AppHostRegistrationVerifier.exe'
+  name: Microsoft_Windows_ApplicationData_appuriverifierinstall
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: Windows.Storage.ApplicationData.dll,CleanupTemporaryState
+  command: '%windir%\system32\rundll32.exe'
+  name: Microsoft_Windows_ApplicationData_CleanupTemporaryState
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\dstokenclean.exe'
+  name: Microsoft_Windows_ApplicationData_DsSvcCleanup
+  schedule: []
+- arguments: '%windir%\system32\AppxDeploymentClient.dll,AppxPreStageCleanupRunTask'
+  command: '%windir%\system32\rundll32.exe'
+  name: Microsoft_Windows_AppxDeploymentClient_Pre-staged app cleanup
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+- arguments: /d acproxy.dll,PerformAutochkOperations
+  command: '%windir%\system32\rundll32.exe'
+  name: Microsoft_Windows_Autochk_Proxy
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: $(Arg0)
+  command: BthUdTask.exe
+  name: Microsoft_Windows_Bluetooth_UninstallDeviceTask
+  schedule: []
+- arguments: '%windir% /sysrepair'
+  command: '%windir%\system32\bcdboot.exe'
+  name: Microsoft_Windows_Chkdsk_SyspartRepair
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: -p -s -o
+  command: '%SystemRoot%\system32\ClipUp.exe'
+  name: Microsoft_Windows_Clip_License Validation
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: ''
+  command: '%SystemRoot%\System32\wsqmcons.exe'
+  name: Microsoft_Windows_Customer Experience Improvement Program_Consolidator
+  schedule:
+  - repeat: PT6H
+    start: '2004-01-02T00:00:00'
+    type: TimeTrigger
+- arguments: -c -h -k -g -$
+  command: '%windir%\system32\defrag.exe'
+  name: Microsoft_Windows_Defrag_ScheduledDefrag
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\devicecensus.exe'
+  name: Microsoft_Windows_Device Information_Device
+  schedule:
+  - repeat: P1D
+    start: '2008-09-01T03:00:00'
+    type: TimeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: ''
+  command: '%windir%\system32\dxgiadaptercache.exe'
+  name: Microsoft_Windows_DirectX_DXGIAdapterCache
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: /autoclean /d %systemdrive%
+  command: '%windir%\system32\cleanmgr.exe'
+  name: Microsoft_Windows_DiskCleanup_SilentCleanup
+  schedule: []
+- arguments: dfdts.dll,DfdGetDefaultPolicyAndSMART
+  command: '%windir%\system32\rundll32.exe'
+  name: Microsoft_Windows_DiskDiagnostic_Microsoft-Windows-DiskDiagnosticDataCollector
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\DFDWiz.exe'
+  name: Microsoft_Windows_DiskDiagnostic_Microsoft-Windows-DiskDiagnosticResolver
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+- arguments: -z
+  command: '%windir%\system32\disksnapshot.exe'
+  name: Microsoft_Windows_DiskFootprint_Diagnostics
+  schedule: []
+- arguments: ''
+  command: '%windir%\System32\LocationNotificationWindows.exe'
+  name: Microsoft_Windows_Location_Notifications
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: ''
+  command: '%windir%\System32\WindowsActionDialog.exe'
+  name: Microsoft_Windows_Location_WindowsActionDialog
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: ''
+  command: '%SystemRoot%\System32\MbaeParserTask.exe'
+  name: Microsoft_Windows_Mobile Broadband Accounts_MNO Metadata Parser
+  schedule:
+  - repeat: null
+    start: null
+    type: EventTrigger
+- arguments: ''
+  command: '%windir%\system32\lpremove.exe'
+  name: Microsoft_Windows_MUI_LPRemove
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\gatherNetworkInfo.vbs'
+  name: Microsoft_Windows_NetTrace_GatherNetworkInfo
+  schedule: []
+- arguments: ''
+  command: '%windir%\System32\SDNDiagnosticsTask.exe'
+  name: Microsoft_Windows_Network Controller_SDN Diagnostics Task
+  schedule:
+  - repeat: PT30M
+    start: '2015-08-21T00:00:00'
+    type: TimeTrigger
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: '%systemroot%\system32\pla.dll,PlaHost "Server Manager Performance Monitor"
+    "$(Arg0)"'
+  command: '%systemroot%\system32\rundll32.exe'
+  name: Microsoft_Windows_PLA_Server Manager Performance Monitor
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: '6'
+  command: '%SystemRoot%\System32\drvinst.exe'
+  name: Microsoft_Windows_Plug and Play_Sysprep Generalize Drivers
+  schedule: []
+- arguments: start pushtoinstall login
+  command: '%windir%\system32\sc.exe'
+  name: Microsoft_Windows_PushToInstall_LoginCheck
+  schedule:
+  - repeat: null
+    start: '2016-12-31T17:00:00-07:00'
+    type: LogonTrigger
+- arguments: start pushtoinstall registration
+  command: '%windir%\system32\sc.exe'
+  name: Microsoft_Windows_PushToInstall_Registration
+  schedule:
+  - repeat: P20D
+    start: '2016-12-31T17:00:00-07:00'
+    type: TimeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: /disableconfigtask
+  command: '%windir%\system32\srvinitconfig.exe'
+  name: Microsoft_Windows_Server Initial Configuration Task
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: /B /nologo %systemroot%\system32\calluxxprovider.vbs $(Arg0) $(Arg1)
+    $(Arg2)
+  command: '%systemroot%\system32\cscript.exe'
+  name: Microsoft_Windows_Server Manager_CleanupOldPerfLogs
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\ServerManagerLauncher.exe'
+  name: Microsoft_Windows_Server Manager_ServerManager
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+- arguments: '%windir%\System32\Windows.SharedPC.AccountManager.dll,StartMaintenance'
+  command: '%windir%\System32\rundll32.exe'
+  name: Microsoft_Windows_SharedPC_Account Cleanup
+  schedule: []
+- arguments: /d /c %systemroot%\system32\silcollector.cmd publish
+  command: '%systemroot%\system32\cmd.exe'
+  name: Microsoft_Windows_Software Inventory Logging_Collection
+  schedule:
+  - repeat: PT1H
+    start: '2000-01-01T03:00:00'
+    type: TimeTrigger
+- arguments: /d /c %systemroot%\system32\silcollector.cmd configure
+  command: '%systemroot%\system32\cmd.exe'
+  name: Microsoft_Windows_Software Inventory Logging_Configuration
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: ''
+  command: '%windir%\system32\SpaceAgent.exe'
+  name: Microsoft_Windows_SpacePort_SpaceAgentTask
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: /Work
+  command: '%windir%\system32\spaceman.exe'
+  name: Microsoft_Windows_SpacePort_SpaceManagerTask
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: StartedFromTask
+  command: '%windir%\system32\speech_onecore\common\SpeechRuntime.exe'
+  name: Microsoft_Windows_Speech_HeadsetButtonPress
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: ''
+  command: '%windir%\system32\speech_onecore\common\SpeechModelDownload.exe'
+  name: Microsoft_Windows_Speech_SpeechModelDownloadTask
+  schedule:
+  - repeat: P1D
+    start: '2004-01-01T00:00:00'
+    type: TimeTrigger
+- arguments: -c -h -g -# -m 8 -i 13500
+  command: '%windir%\system32\defrag.exe'
+  name: Microsoft_Windows_Storage Tiers Management_Storage Tiers Optimization
+  schedule:
+  - repeat: PT4H
+    start: '2013-01-01T01:00:00'
+    type: TimeTrigger
+- arguments: Disable
+  command: '%windir%\System32\RemoteFXvGPUDisablement.exe'
+  name: Microsoft_Windows_termsrv_RemoteFX_RemoteFXvGPUDisableTask
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+- arguments: Warning
+  command: '%windir%\System32\RemoteFXvGPUDisablement.exe'
+  name: Microsoft_Windows_termsrv_RemoteFX_RemoteFXWarningTask
+  schedule:
+  - repeat: null
+    start: '2014-01-01T13:00:00'
+    type: CalendarTrigger
+- arguments: start w32time task_started
+  command: '%windir%\system32\sc.exe'
+  name: Microsoft_Windows_Time Synchronization_SynchronizeTime
+  schedule: []
+- arguments: ''
+  command: '%windir%\system32\tzsync.exe'
+  name: Microsoft_Windows_Time Zone_SynchronizeTimeZone
+  schedule: []
+- arguments: StartScan
+  command: '%systemroot%\system32\usoclient.exe'
+  name: Microsoft_Windows_UpdateOrchestrator_Schedule Scan Static Task
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: null
+    type: EventTrigger
+- arguments: StartScan
+  command: '%systemroot%\system32\usoclient.exe'
+  name: Microsoft_Windows_UpdateOrchestrator_Schedule Scan
+  schedule:
+  - repeat: PT22H
+    start: '2018-11-15T09:12:24-07:00'
+    type: TimeTrigger
+- arguments: ''
+  command: '%systemroot%\system32\MusNotification.exe'
+  name: Microsoft_Windows_UpdateOrchestrator_USO_UxBroker
+  schedule:
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: '2000-01-01T03:00:00'
+    type: CalendarTrigger
+- arguments: config upnphost start= auto
+  command: sc.exe
+  name: Microsoft_Windows_UPnP_UPnPHostConfig
+  schedule: []
+- arguments: -IdleTask -TaskName WdCacheMaintenance
+  command: C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.25010.11-0\MpCmdRun.exe
+  name: Microsoft_Windows_Windows Defender_Windows Defender Cache Maintenance
+  schedule: []
+- arguments: -IdleTask -TaskName WdCleanup
+  command: C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.25010.11-0\MpCmdRun.exe
+  name: Microsoft_Windows_Windows Defender_Windows Defender Cleanup
+  schedule: []
+- arguments: Scan -ScheduleJob -ScanTrigger 55 -IdleScheduledJob
+  command: C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.25010.11-0\MpCmdRun.exe
+  name: Microsoft_Windows_Windows Defender_Windows Defender Scheduled Scan
+  schedule:
+  - repeat: null
+    start: '2000-01-01T02:11:06'
+    type: CalendarTrigger
+- arguments: -IdleTask -TaskName WdVerification
+  command: C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.25010.11-0\MpCmdRun.exe
+  name: Microsoft_Windows_Windows Defender_Windows Defender Verification
+  schedule: []
+- arguments: -upload
+  command: '%windir%\system32\wermgr.exe'
+  name: Microsoft_Windows_Windows Error Reporting_QueueReporting
+  schedule:
+  - repeat: null
+    start: null
+    type: BootTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+  - repeat: PT30M
+    start: '2014-12-31T17:00:00-07:00'
+    type: TimeTrigger
+- arguments: bfe.dll,BfeOnServiceStartTypeChange
+  command: '%windir%\system32\rundll32.exe'
+  name: Microsoft_Windows_Windows Filtering Platform_BfeOnServiceStartTypeChange
+  schedule:
+  - repeat: null
+    start: null
+    type: EventTrigger
+- arguments: ''
+  command: '"%ProgramFiles%\Windows Media Player\wmpnscfg.exe"'
+  name: Microsoft_Windows_Windows Media Sharing_UpdateLibrary
+  schedule:
+  - repeat: null
+    start: null
+    type: EventTrigger
+- arguments: start wuauserv
+  command: C:\Windows\system32\sc.exe
+  name: Microsoft_Windows_WindowsUpdate_Scheduled Start
+  schedule:
+  - repeat: null
+    start: '2025-03-31T15:54:16-07:00'
+    type: TimeTrigger
+  - repeat: null
+    start: null
+    type: SessionStateChangeTrigger
+  - repeat: null
+    start: null
+    type: SessionStateChangeTrigger
+  - repeat: null
+    start: null
+    type: WnfStateChangeTrigger
+- arguments: $(Arg0) $(Arg1) $(Arg2)
+  command: '%SystemRoot%\System32\dsregcmd.exe'
+  name: Microsoft_Windows_Workplace Join_Automatic-Device-Join
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+  - repeat: PT1H
+    start: null
+    type: EventTrigger
+- arguments: /checkrecovery
+  command: '%SystemRoot%\System32\dsregcmd.exe'
+  name: Microsoft_Windows_Workplace Join_Recovery-Check
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+- arguments: /c
+  command: C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  name: MicrosoftEdgeUpdateTaskMachineCore{AC5C7D00-9E0E-4D3A-AFD2-04231FDCC17B}
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+  - repeat: null
+    start: '2025-03-07T02:50:59'
+    type: CalendarTrigger
+- arguments: /ua /installsource scheduler
+  command: C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  name: MicrosoftEdgeUpdateTaskMachineUA{1013B616-5BE6-4429-86DB-7F1DB2C49E64}
+  schedule:
+  - repeat: PT1H
+    start: '2025-03-07T02:20:59'
+    type: CalendarTrigger
+- arguments: /c
+  command: C:\Users\cboshaw\AppData\Local\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  name: MicrosoftEdgeUpdateTaskUserS-1-5-21-2689056526-580890476-3117508598-1146Core{A5F508AF-8C95-4AA1-A289-D92DFAA43697}
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+  - repeat: null
+    start: '2025-03-06T13:09:33'
+    type: CalendarTrigger
+- arguments: /ua /installsource scheduler
+  command: C:\Users\cboshaw\AppData\Local\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  name: MicrosoftEdgeUpdateTaskUserS-1-5-21-2689056526-580890476-3117508598-1146UA{FC7EC54F-54DC-4CB4-9909-DBC1B38A06D5}
+  schedule:
+  - repeat: PT1H
+    start: '2025-03-06T12:39:33'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\notifications_ms.vbs
+  command: C:\Windows\System32\wscript.exe
+  name: MS Notifications
+  schedule:
+  - repeat: PT1M
+    start: '2021-12-20T05:35:25'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\notifications.vbs
+  command: C:\Windows\System32\wscript.exe
+  name: Notifications
+  schedule:
+  - repeat: PT1M
+    start: '2023-11-01T05:33:40'
+    type: CalendarTrigger
+- arguments: /reporting
+  command: '%localappdata%\Microsoft\OneDrive\OneDriveStandaloneUpdater.exe'
+  name: OneDrive Reporting Task-S-1-5-21-2689056526-580890476-3117508598-1146
+  schedule:
+  - repeat: P1D
+    start: '2025-03-24T09:24:05'
+    type: TimeTrigger
+- arguments: ''
+  command: '%localappdata%\Microsoft\OneDrive\OneDriveStandaloneUpdater.exe'
+  name: OneDrive Standalone Update Task-S-1-5-21-2689056526-580890476-3117508598-1146
+  schedule:
+  - repeat: P1D
+    start: '1992-05-01T08:00:00'
+    type: TimeTrigger
+- arguments: /startInstances
+  command: C:\Users\cboshaw\AppData\Local\Microsoft\OneDrive\25.035.0223.0003\OneDriveLauncher.exe
+  name: OneDrive Startup Task-S-1-5-21-2689056526-580890476-3117508598-1146
+  schedule:
+  - repeat: null
+    start: null
+    type: LogonTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\partscarryover.php
+  command: C:\php\php.exe
+  name: Parts Carryover DAS
+  schedule:
+  - repeat: null
+    start: '2022-06-01T23:55:23'
+    type: CalendarTrigger
+- arguments: ''
+  command: '"C:\Users\cboshaw\Desktop\Nightly Scripts\podium.cmd"'
+  name: Podium
+  schedule:
+  - repeat: null
+    start: '2017-12-07T23:00:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\prechurn.php
+  command: C:\php\php.exe
+  name: Pre Churn Report
+  schedule:
+  - repeat: null
+    start: '2023-05-24T05:00:14'
+    type: CalendarTrigger
+- arguments: ''
+  command: reminders_rlk.cmd
+  name: Service Reminders
+  schedule:
+  - repeat: null
+    start: '2016-10-06T22:00:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\shopdata.php
+  command: C:\php\php.exe
+  name: Shopdata
+  schedule:
+  - repeat: PT1M
+    start: '2022-09-11T13:30:00'
+    type: TimeTrigger
+- arguments: ''
+  command: '"C:\Users\cboshaw\Desktop\Nightly Scripts\synctime.cmd"'
+  name: Sync Time
+  schedule:
+  - repeat: null
+    start: '2016-10-06T22:00:00'
+    type: CalendarTrigger
+- arguments: ''
+  command: '"C:\Users\cboshaw\Desktop\Nightly Scripts\TimeZoneUpdaters\runtimezones.cmd"'
+  name: Timezone Sync
+  schedule:
+  - repeat: null
+    start: '2016-10-06T21:35:00'
+    type: CalendarTrigger
+- arguments: C:\Users\cboshaw\Desktop\crons\packagetrials.php
+  command: C:\php\php.exe
+  name: Trialscheck
+  schedule:
+  - repeat: null
+    start: '2021-04-14T00:01:00'
+    type: CalendarTrigger
+notes:
+- Jobs run using Windows Task Scheduler
+- Some tasks use PHP CLI via scheduled scripts
+- Extracted from exported XML task definitions
+php:
+  cli_path: C:\php\php.exe
+  ini_path: unknown
+platform: Windows Server
+role: Scheduled task runner (cron jobs)
+server_name: ScriptServer
+
+
+# FILE: active-directory.yaml
+dns_config_snippet:
+- "\0"
+- "\0W\0i\0n\0d\0o\0w\0s\0 \0I\0P\0 \0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0"
+- "\0"
+- "\0"
+- "\0"
+- "\0 \0 \0 \0H\0o\0s\0t\0 \0N\0a\0m\0e\0 \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0.\0\
+  \ \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0:\0 \0A\0D\01\0"
+- "\0"
+- "\0 \0 \0 \0P\0r\0i\0m\0a\0r\0y\0 \0D\0n\0s\0 \0S\0u\0f\0f\0i\0x\0 \0 \0.\0 \0.\0\
+  \ \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0:\0 \0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0 \0 \0 \0N\0o\0d\0e\0 \0T\0y\0p\0e\0 \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0.\0\
+  \ \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0:\0 \0H\0y\0b\0r\0i\0d\0"
+- "\0"
+- "\0 \0 \0 \0I\0P\0 \0R\0o\0u\0t\0i\0n\0g\0 \0E\0n\0a\0b\0l\0e\0d\0.\0 \0.\0 \0.\0\
+  \ \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0:\0 \0N\0o\0"
+- "\0"
+- "\0 \0 \0 \0W\0I\0N\0S\0 \0P\0r\0o\0x\0y\0 \0E\0n\0a\0b\0l\0e\0d\0.\0 \0.\0 \0.\0\
+  \ \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0:\0 \0N\0o\0"
+- "\0"
+- "\0 \0 \0 \0D\0N\0S\0 \0S\0u\0f\0f\0i\0x\0 \0S\0e\0a\0r\0c\0h\0 \0L\0i\0s\0t\0.\0\
+  \ \0.\0 \0.\0 \0.\0 \0.\0 \0.\0 \0:\0 \0u\0s\0-\0e\0a\0s\0t\0-\01\0.\0e\0c\02\0\
+  -\0u\0t\0i\0l\0i\0t\0i\0e\0s\0.\0a\0m\0a\0z\0o\0n\0a\0w\0s\0.\0c\0o\0m\0"
+- "\0"
+- "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0e\0c\02\0.\0i\0n\0t\0e\0r\0n\0a\0l\0"
+- "\0"
+- "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+domain: shopboss-aws.com
+domain_computer_count: 140
+domain_controllers_snippet:
+- "\0"
+- "\0"
+- "\0"
+- "\0C\0o\0m\0p\0u\0t\0e\0r\0O\0b\0j\0e\0c\0t\0D\0N\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0C\0N\0=\0I\0P\0-\0C\06\01\03\00\02\0D\0D\0,\0O\0U\0=\0D\0o\0m\0a\0i\0\
+  n\0 \0C\0o\0n\0t\0r\0o\0l\0l\0e\0r\0s\0,\0D\0C\0=\0s\0h\0o\0p\0b\0o\0s\0s\0,\0D\0\
+  C\0=\0a\0w\0s\0"
+- "\0"
+- "\0D\0e\0f\0a\0u\0l\0t\0P\0a\0r\0t\0i\0t\0i\0o\0n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0D\0C\0=\0s\0h\0o\0p\0b\0o\0s\0s\0,\0D\0C\0=\0a\0w\0s\0"
+- "\0"
+- "\0D\0o\0m\0a\0i\0n\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0E\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0T\0r\0u\0e\0"
+- "\0"
+- "\0F\0o\0r\0e\0s\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0H\0o\0s\0t\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0I\0P\0-\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0\
+  s\0"
+- "\0"
+- "\0I\0n\0v\0o\0c\0a\0t\0i\0o\0n\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0f\0a\0c\0f\0a\09\0e\0e\0-\09\04\0a\03\0-\04\07\05\05\0-\0b\01\0f\04\0\
+  -\0b\05\0a\0f\0a\09\08\0a\0d\08\06\0b\0"
+- "\0"
+- "\0I\0P\0v\04\0A\0d\0d\0r\0e\0s\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \01\00\0.\01\09\07\0.\02\00\0.\01\08\04\0"
+- "\0"
+- "\0I\0P\0v\06\0A\0d\0d\0r\0e\0s\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0:\0 \0"
+domain_details:
+- "\0"
+- "\0"
+- "\0"
+- "\0A\0l\0l\0o\0w\0e\0d\0D\0N\0S\0S\0u\0f\0f\0i\0x\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+- "\0"
+- "\0C\0h\0i\0l\0d\0D\0o\0m\0a\0i\0n\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+- "\0"
+- "\0C\0o\0m\0p\0u\0t\0e\0r\0s\0C\0o\0n\0t\0a\0i\0n\0e\0r\0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0O\0U\0=\0C\0o\0m\0p\0u\0t\0e\0r\0s\0,\0O\0U\0\
+  =\0s\0h\0o\0p\0b\0o\0s\0s\0,\0D\0C\0=\0s\0h\0o\0p\0b\0o\0s\0s\0,\0D\0C\0=\0a\0w\0\
+  s\0"
+- "\0"
+- "\0D\0e\0l\0e\0t\0e\0d\0O\0b\0j\0e\0c\0t\0s\0C\0o\0n\0t\0a\0i\0n\0e\0r\0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0C\0N\0=\0D\0e\0l\0e\0t\0e\0d\0 \0O\0b\0j\0e\0\
+  c\0t\0s\0,\0D\0C\0=\0s\0h\0o\0p\0b\0o\0s\0s\0,\0D\0C\0=\0a\0w\0s\0"
+- "\0"
+- "\0D\0i\0s\0t\0i\0n\0g\0u\0i\0s\0h\0e\0d\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0D\0C\0=\0s\0h\0o\0p\0b\0o\0s\0s\0,\0D\0C\0=\0\
+  a\0w\0s\0"
+- "\0"
+- "\0D\0N\0S\0R\0o\0o\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+forest_details:
+- "\0"
+- "\0"
+- "\0"
+- "\0A\0p\0p\0l\0i\0c\0a\0t\0i\0o\0n\0P\0a\0r\0t\0i\0t\0i\0o\0n\0s\0 \0:\0 \0{\0D\0\
+  C\0=\0F\0o\0r\0e\0s\0t\0D\0n\0s\0Z\0o\0n\0e\0s\0,\0D\0C\0=\0s\0h\0o\0p\0b\0o\0s\0\
+  s\0,\0D\0C\0=\0a\0w\0s\0,\0 \0D\0C\0=\0D\0o\0m\0a\0i\0n\0D\0n\0s\0Z\0o\0n\0e\0s\0\
+  ,\0D\0C\0=\0s\0h\0o\0p\0b\0o\0s\0s\0,\0D\0C\0=\0a\0w\0s\0}\0"
+- "\0"
+- "\0C\0r\0o\0s\0s\0F\0o\0r\0e\0s\0t\0R\0e\0f\0e\0r\0e\0n\0c\0e\0s\0 \0:\0 \0{\0}\0"
+- "\0"
+- "\0D\0o\0m\0a\0i\0n\0N\0a\0m\0i\0n\0g\0M\0a\0s\0t\0e\0r\0 \0 \0 \0 \0:\0 \0I\0P\0\
+  -\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0D\0o\0m\0a\0i\0n\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0{\0s\0\
+  h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0}\0"
+- "\0"
+- "\0F\0o\0r\0e\0s\0t\0M\0o\0d\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0W\0i\0\
+  n\0d\0o\0w\0s\02\00\01\02\0R\02\0F\0o\0r\0e\0s\0t\0"
+- "\0"
+- "\0G\0l\0o\0b\0a\0l\0C\0a\0t\0a\0l\0o\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0{\0I\0\
+  P\0-\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0,\0 \0I\0P\0\
+  -\0C\06\01\03\00\01\0E\0E\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0}\0"
+- "\0"
+fsmo_roles:
+- "S\0c\0h\0e\0m\0a\0 \0m\0a\0s\0t\0e\0r\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0I\0P\0-\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0D\0o\0m\0a\0i\0n\0 \0n\0a\0m\0i\0n\0g\0 \0m\0a\0s\0t\0e\0r\0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0I\0P\0-\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0P\0D\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0I\0P\0-\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0R\0I\0D\0 \0p\0o\0o\0l\0 \0m\0a\0n\0a\0g\0e\0r\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+  \ \0 \0I\0P\0-\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0I\0n\0f\0r\0a\0s\0t\0r\0u\0c\0t\0u\0r\0e\0 \0m\0a\0s\0t\0e\0r\0 \0 \0 \0 \0 \0\
+  \ \0 \0I\0P\0-\0C\06\01\03\00\02\0D\0D\0.\0s\0h\0o\0p\0b\0o\0s\0s\0.\0a\0w\0s\0"
+- "\0"
+- "\0T\0h\0e\0 \0c\0o\0m\0m\0a\0n\0d\0 \0c\0o\0m\0p\0l\0e\0t\0e\0d\0 \0s\0u\0c\0c\0\
+  e\0s\0s\0f\0u\0l\0l\0y\0.\0"
+- "\0"
+- "\0"
+- "\0"
+- "\0"
+instance_id: i-06ef75199feb6f74f
+notes:
+- This server manages user access and authentication across the domain.
+- DNS is likely managed locally on this server to support domain joins.
+- FSMO roles are all held by this server unless specified otherwise.
+- Configuration validated via PowerShell export on SB Active Directory host.
+platform: Windows Server
+role: Active Directory Domain Controller
+server_name: AD1.shopboss.aws
+
+
+# FILE: php-iis-sbwebhost02.yaml
+instance_id: i-03594ec360ca29edc
+notes:
+- Each site listed was extracted from SBWEBHOST02 using automated script
+- "Assumes all SBWEBHOST0[3\u20136] are configured identically"
+- php.ini paths, versions, FastCGI mappings should be validated periodically
+platform: Microsoft Windows Server 2019 Datacenter
+server_name: SBWEBHOST02
+sites:
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: __e.myvehiclerepairs.net
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: tech.shopbosspro.com
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: __sbpe.net
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: shopbosspro.com
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0o\0s\0t\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: __e.sbkiosk.com
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: tech.sbpent.com
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: sbpent.com
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: __sbkiosk.com
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: __myvehiclerepairs.net
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: __sbpt.io
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+- bindings: []
+  default_documents:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0C\0o\0l\0l\0e\0c\0t\0i\0o\0n\0 \0 \0 \0 \0 \0:\0 \0{\0M\0i\0c\0r\0o\0s\0o\0\
+    f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0\
+    k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0,\0 \0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0I\0t\0e\0m\0X\0P\0a\0t\0h\0 \0 \0 \0 \0 \0 \0:\0 \0/\0s\0y\0s\0t\0e\0m\0.\0\
+    w\0e\0b\0S\0e\0r\0v\0e\0r\0/\0d\0e\0f\0a\0u\0l\0t\0D\0o\0c\0u\0m\0e\0n\0t\0/\0\
+    f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0:\0 \0{\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0:\0 \0f\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0 \0M\0i\0c\0r\0o\0s\0o\0f\0\
+    t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0F\0r\0a\0m\0e\0w\0o\0r\0k\0\
+    .\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0m\0e\0n\0t\0S\0c\0h\0e\0m\0\
+    a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  hostname: sbpe.live
+  ini_path: null
+  log_sites:
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0t\0e\0,\0T\0i\0m\0e\0,\0C\0l\0i\0e\0n\0t\0I\0P\0,\0U\0s\0e\0r\0N\0a\0\
+    m\0e\0,\0S\0i\0t\0e\0N\0a\0m\0e\0,\0C\0o\0m\0p\0u\0t\0e\0r\0N\0a\0m\0e\0,\0S\0\
+    e\0r\0v\0e\0r\0I\0P\0,\0M\0e\0t\0h\0o\0d\0,\0U\0r\0i\0S\0t\0e\0m\0,\0U\0r\0i\0\
+    Q\0u\0e\0r\0y\0,\0H\0t\0t\0p\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0\
+    \ \0,\0W\0i\0n\03\02\0S\0t\0a\0t\0u\0s\0,\0T\0i\0m\0e\0T\0a\0k\0e\0n\0,\0S\0e\0\
+    r\0v\0e\0r\0P\0o\0r\0t\0,\0U\0s\0e\0r\0A\0g\0e\0n\0t\0,\0C\0o\0o\0k\0i\0e\0,\0\
+    R\0e\0f\0e\0r\0e\0r\0,\0H\0t\0t\0p\0S\0u\0b\0S\0t\0a\0t\0u\0s\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0L\0o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0l\0o\0g\0F\0o\0r\0m\0a\0t\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0W\03\0C\0"
+  - "\0"
+  - "\0l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0i\0l\0e\0"
+  - "\0"
+  - "\0d\0i\0r\0e\0c\0t\0o\0r\0y\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0%\0S\0y\0s\0t\0e\0m\0D\0r\0i\0v\0e\0%\0\\\0i\0n\0e\0t\0p\0u\0b\0\\\0l\0o\0\
+    g\0s\0\\\0L\0o\0g\0F\0i\0l\0e\0s\0"
+  - "\0"
+  - "\0p\0e\0r\0i\0o\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0D\0a\0i\0l\0y\0"
+  - "\0"
+  - "\0t\0r\0u\0n\0c\0a\0t\0e\0S\0i\0z\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \02\00\09\07\01\05\02\00\0"
+  - "\0"
+  - "\0l\0o\0c\0a\0l\0T\0i\0m\0e\0R\0o\0l\0l\0o\0v\0e\0r\0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0F\0a\0l\0s\0e\0"
+  - "\0"
+  - "\0e\0n\0a\0b\0l\0e\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0l\0o\0g\0S\0i\0t\0e\0I\0d\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0T\0r\0u\0e\0"
+  - "\0"
+  - "\0f\0l\0u\0s\0h\0B\0y\0E\0n\0t\0r\0y\0C\0o\0u\0n\0t\0W\03\0C\0L\0o\0g\0 \0:\0\
+    \ \00\0"
+  - "\0"
+  - "\0m\0a\0x\0L\0o\0g\0L\0i\0n\0e\0L\0e\0n\0g\0t\0h\0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \06\05\05\03\06\0"
+  - "\0"
+  - "\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0"
+  - "\0"
+  - "\0A\0t\0t\0r\0i\0b\0u\0t\0e\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0l\0o\0g\0E\0x\0t\0F\0i\0l\0e\0F\0l\0a\0g\0s\0,\0 \0c\0u\0s\0t\0o\0m\0L\0\
+    o\0g\0P\0l\0u\0g\0i\0n\0C\0l\0s\0i\0d\0,\0 \0l\0o\0g\0F\0o\0r\0m\0a\0t\0,\0 \0\
+    l\0o\0g\0T\0a\0r\0g\0e\0t\0W\03\0C\0.\0.\0.\0}\0"
+  - "\0"
+  - "\0C\0h\0i\0l\0d\0E\0l\0e\0m\0e\0n\0t\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0{\0c\0u\0s\0t\0o\0m\0F\0i\0e\0l\0d\0s\0}\0"
+  - "\0"
+  - "\0E\0l\0e\0m\0e\0n\0t\0T\0a\0g\0N\0a\0m\0e\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0l\0o\0g\0F\0i\0l\0e\0"
+  - "\0"
+  - "\0M\0e\0t\0h\0o\0d\0s\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0"
+  - "\0"
+  - "\0S\0c\0h\0e\0m\0a\0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0 \0:\0\
+    \ \0M\0i\0c\0r\0o\0s\0o\0f\0t\0.\0I\0I\0s\0.\0P\0o\0w\0e\0r\0S\0h\0e\0l\0l\0.\0\
+    F\0r\0a\0m\0e\0w\0o\0r\0k\0.\0C\0o\0n\0f\0i\0g\0u\0r\0a\0t\0i\0o\0n\0E\0l\0e\0\
+    m\0e\0n\0t\0S\0c\0h\0e\0m\0a\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  - "\0"
+  php_version: unknown
+
+
+# FILE: iam.yml
+roles:
+- arn: arn:aws:iam::815965276449:role/service-role/AmazonAppStreamServiceAccess
+  assume_role_policy:
+  - action: sts:AssumeRole
+    condition: {}
+    effect: Allow
+    principal:
+      Service: appstream.amazonaws.com
+  created_at: '2022-06-13T16:15:46+00:00'
+  description: ''
+  max_session_duration: 3600
+  name: AmazonAppStreamServiceAccess
+  path: /service-role/
+- arn: arn:aws:iam::815965276449:role/service-role/Amazon_EventBridge_Scheduler_LAMBDA_0dfb31919b
+  assume_role_policy:
+  - action: sts:AssumeRole
+    condition:
+      StringEquals:
+        aws:SourceAccount: '815965276449'
+    effect: Allow
+    principal:
+      Service: scheduler.amazonaws.com
+  created_at: '2023-11-10T22:07:07+00:00'
+  description: ''
+  max_session_duration: 3600
+  name: Amazon_EventBridge_Scheduler_LAMBDA_0dfb31919b
+  path: /service-role/
+- arn: arn:aws:iam::815965276449:role/aurora-monitor-us-east-1
+  assume_role_policy:
+  - action: sts:AssumeRole
+    condition: {}
+    effect: Allow
+    principal:
+      Service: monitoring.rds.amazonaws.com
+  created_at: '2021-04-13T17:44:57+00:00'
+  description: Allows your Aurora DB cluster to deliver Enhanced Monitoring metrics.
+  max_session_duration: 3600
+  name: aurora-monitor-us-east-1
+  path: /
+- name: csb-shopboss-prod-use1-svcs-ad-mgmt-Instance
+
+
+# FILE: security-groups.yaml
+security_groups:
+- description: default VPC security group
+  group_id: sg-076859861d0a9bf38
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-076859861d0a9bf38
+    to_port: 6379
+  name: default
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-08dd2219722605f7e
+- description: shopboss-api
+  group_id: sg-000bb445f946a9efb
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 107.178.58.42/32
+    - 181.131.243.253/32
+    to_port: 22
+  name: shopboss-api-sg
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0cde1e2e5bd161d39
+- description: Security group attached to production to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-0b7c9c8fe7154a171
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-0e7c204b18bcf4be4
+    to_port: 6379
+  name: ec2-elasticache-i-08bdad4e7a016bb74:production
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: sb-dev-api-laravel
+  group_id: sg-002eeb48a288af9f1
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: sb-dev-api-laravel
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-08dd2219722605f7e
+- description: Security group attached to instances to securely connect to staging4.
+    Modification could lead to connection loss.
+  group_id: sg-00a675b0b40b5c79e
+  inbound_rules: []
+  name: elasticache-ec2-staging4:i-0fe77ddf838e48a5a
+  outbound_rules:
+  - destinations:
+    - SG:sg-000c15da759b34bf3
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: This security group was generated by AWS Marketplace and is based on
+    recommended settings for OpenVPN Access Server version 2.8.5 provided by OpenVPN
+    Inc.
+  group_id: sg-0a5f73f1414f2f6f7
+  inbound_rules:
+  - from_port: 1194
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 1194
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  - from_port: 945
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 945
+  - from_port: 943
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 943
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: OpenVPN Access Server-2.8.5-AutogenByAWSMP--1
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: 'sb-dev-api2024 '
+  group_id: sg-04bb5d9d52ddcd784
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: sb-dev-api2024
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-3 created 2023-10-26T18:14:20.832Z
+  group_id: sg-0f4716519702f2995
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: launch-wizard-3
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to production.
+    Modification could lead to connection loss.
+  group_id: sg-057c1d19fbb72fda3
+  inbound_rules: []
+  name: elasticache-ec2-production:i-037ebcee869758fe1
+  outbound_rules:
+  - destinations:
+    - SG:sg-0575ac43bc8e158f7
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Allows access from Zero Tier VPN
+  group_id: sg-062cd1b55263c7aad
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - 172.28.0.0/16
+    to_port: all
+  name: Allow_ZeroTier_VPN
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-8 created 2024-07-21T20:05:33.322Z
+  group_id: sg-0e6b9549e44dc5d71
+  inbound_rules:
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3389
+  name: launch-wizard-8
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Staging Server
+  group_id: sg-0a0113728ac784ba7
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    - ::/0
+    to_port: 80
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    - ::/0
+    to_port: 443
+  name: Staging Server
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security Group for FSx for Windows File Storage Access
+  group_id: sg-0be0d65771e73cbe5
+  inbound_rules:
+  - from_port: 445
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 445
+  - from_port: 464
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 464
+  - from_port: 464
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 464
+  - from_port: 49152
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 65535
+  - from_port: 389
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 389
+  - from_port: 53
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 53
+  - from_port: 389
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 389
+  - from_port: 123
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 123
+  - from_port: 445
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 445
+  - from_port: 9389
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 9389
+  - from_port: 5985
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 5985
+  - from_port: 3268
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 3268
+  - from_port: 88
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 88
+  - from_port: 135
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 135
+  - from_port: 636
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 636
+  - from_port: 3269
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 3269
+  - from_port: 53
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 53
+  - from_port: 88
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 88
+  name: csb-shopboss-prod-use1-svcs-fsx-FSxSecurityGroup-EA9T21L7CWAV
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: Security Group for FSx for Windows
+    aws:cloudformation:logical-id: FSxSecurityGroup
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-fsx/88428e90-49df-11eb-8c75-127fd1b91345
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-fsx
+  vpc_id: vpc-0763a38927252d771
+- description: Security group for the public internet facing Application Load Balancer
+  group_id: sg-019e16a0591bc51c4
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: Public Web ALB
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: Public Web ALB
+    aws:cloudformation:logical-id: WebhostAlbSg
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-app-alb/8fa74ce0-7705-11eb-8975-1240b2c3208f
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-app-alb
+  vpc_id: vpc-0763a38927252d771
+- description: Security Group for FSx for Windows File Storage Access
+  group_id: sg-05581e29f765e7351
+  inbound_rules:
+  - from_port: 445
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 445
+  - from_port: 464
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 464
+  - from_port: 464
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 464
+  - from_port: 49152
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 65535
+  - from_port: 389
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 389
+  - from_port: 53
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 53
+  - from_port: 389
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 389
+  - from_port: 445
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 445
+  - from_port: 123
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 123
+  - from_port: 9389
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 9389
+  - from_port: 5985
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 5985
+  - from_port: 3268
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 3268
+  - from_port: 88
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 88
+  - from_port: 135
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 135
+  - from_port: 636
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 636
+  - from_port: 3269
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 3269
+  - from_port: 53
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 53
+  - from_port: 88
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 88
+  name: csb-shopboss-staging-use1-svcs-fsx-FSxSecurityGroup-zEQQIZbxUXTb
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: FSxSecurityGroup
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-staging-use1-svcs-fsx/ddc447a0-5372-11ef-a3ea-0e3cbd1680b7
+    aws:cloudformation:stack-name: csb-shopboss-staging-use1-svcs-fsx
+  vpc_id: vpc-0763a38927252d771
+- description: Allows HTTPs access
+  group_id: sg-075a818b3fba9cf7e
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: dev-api-sg
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0cde1e2e5bd161d39
+- description: Enable RDP access from the Internet
+  group_id: sg-0ddf11b6725e63bee
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 3391
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3391
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - SG:sg-0687e529c1dcb6623
+    to_port: 3389
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  - from_port: -1
+    protocol: icmp
+    sources:
+    - 0.0.0.0/0
+    to_port: -1
+  name: Remote-Desktop-Gateway-RemoteDesktopGatewaySG-7WLRAPUBFSL9
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: RemoteDesktopGatewaySG
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/Remote-Desktop-Gateway/879eb960-4a1f-11eb-bec2-0afbd365c3b9
+    aws:cloudformation:stack-name: Remote-Desktop-Gateway
+  vpc_id: vpc-0763a38927252d771
+- description: redis
+  group_id: sg-001f630e8aa8a2fa6
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-062d918890898b9ec
+    - SG:sg-00850209b24dfb592
+    - SG:sg-0687e529c1dcb6623
+    - SG:sg-0ed6fa37c551abd60
+    - SG:sg-0fdaf19412df44236
+    to_port: 6379
+  name: redis
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    - ::/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-9 created 2025-03-24T19:29:21.919Z
+  group_id: sg-0d747f52f0668e6f5
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  name: launch-wizard-9
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: GlobalAccelerator configured SecurityGroup
+  group_id: sg-08a7a7f94bae21191
+  inbound_rules: []
+  name: GlobalAccelerator
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    AWSServiceName: GlobalAccelerator
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to production.
+    Modification could lead to connection loss.
+  group_id: sg-06ed99faf9532368c
+  inbound_rules: []
+  name: elasticache-ec2-production:i-0d23c577d740198c9
+  outbound_rules:
+  - destinations:
+    - SG:sg-03a6a965a5bdc6a28
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Created by RDS management console
+  group_id: sg-0f9a4a629f03d0ccb
+  inbound_rules:
+  - from_port: 3306
+    protocol: tcp
+    sources:
+    - 104.188.20.182/32
+    to_port: 3306
+  name: restore
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: default VPC security group
+  group_id: sg-03e0e032cfc37afce
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 45.55.124.124/32
+    - 159.203.150.232/32
+    - 159.203.150.216/32
+    to_port: 22
+  name: default
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: API
+  vpc_id: vpc-0cde1e2e5bd161d39
+- description: Security group attached to staging to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-0bde762d379cac197
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-0ab0e6a0857fbe8de
+    to_port: 6379
+  name: ec2-elasticache-i-0fe77ddf838e48a5a:staging
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to production to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-0575ac43bc8e158f7
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-057c1d19fbb72fda3
+    to_port: 6379
+  name: ec2-elasticache-i-037ebcee869758fe1:production
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: staging server access
+  group_id: sg-0c0ee8ee7f55c4879
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  name: staging-web-sg
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to production.
+    Modification could lead to connection loss.
+  group_id: sg-0e2b944dc47c178cf
+  inbound_rules: []
+  name: elasticache-ec2-production:i-03594ec360ca29edc
+  outbound_rules:
+  - destinations:
+    - SG:sg-0db9f9d55a91a32ea
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-1 created 2022-04-18T16:25:11.822Z
+  group_id: sg-0f701fe2cc1b14023
+  inbound_rules: []
+  name: launch-wizard-1
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security Group for Remote Users
+  group_id: sg-0f05e28d053315f49
+  inbound_rules:
+  - from_port: 3306
+    protocol: tcp
+    sources:
+    - 206.53.92.238/32
+    - 72.197.207.119/32
+    to_port: 3307
+  name: csb-shopboss-prod-use1-app-alb-MySqlRemoteAccessSG-P2ZZ6B5NX9VA
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: MySqlRemoteAccessSG
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-app-alb/8fa74ce0-7705-11eb-8975-1240b2c3208f
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-app-alb
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to production.
+    Modification could lead to connection loss.
+  group_id: sg-0baa2b37449cc5d42
+  inbound_rules: []
+  name: elasticache-ec2-production:i-020f85e8dd63d693e
+  outbound_rules:
+  - destinations:
+    - SG:sg-0f809cbf020931826
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group for the public internet facing Application Load Balancer
+  group_id: sg-0fdaf19412df44236
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - SG:sg-019e16a0591bc51c4
+    - SG:sg-01c8729f8b0450d68
+    - SG:sg-064ea7a8136c64bb7
+    - SG:sg-0687e529c1dcb6623
+    to_port: all
+  - from_port: 0
+    protocol: tcp
+    sources:
+    - SG:sg-0fdaf19412df44236
+    to_port: 0
+  name: Webhost ASG
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: WebAsgSg
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-app-alb/8fa74ce0-7705-11eb-8975-1240b2c3208f
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-app-alb
+  vpc_id: vpc-0763a38927252d771
+- description: sb-api-laravel
+  group_id: sg-010500c7927036ca9
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: sb-api-laravel
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-08dd2219722605f7e
+- description: SG for Innovative
+  group_id: sg-0e34220a45b92d674
+  inbound_rules:
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - 64.20.10.148/32
+    to_port: 3389
+  name: Inno-Bastian-Host-SG
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to staging3.
+    Modification could lead to connection loss.
+  group_id: sg-00bc8c13eac669dfb
+  inbound_rules: []
+  name: elasticache-ec2-staging3:i-0fe77ddf838e48a5a
+  outbound_rules:
+  - destinations:
+    - SG:sg-0c8a286c7eb2e2e6e
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-5 created 2024-03-18T19:08:51.973Z
+  group_id: sg-02bd0ab4d49fb438e
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 104.188.20.182/32
+    to_port: 22
+  - from_port: 3000
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3000
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: launch-wizard-5
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: forge-api
+  group_id: sg-0256ec69c6e23c331
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - ::/0
+    to_port: 80
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 104.188.20.182/32
+    - 159.203.150.232/32
+    - 159.203.150.216/32
+    - 45.55.124.124/32
+    to_port: 22
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - ::/0
+    to_port: 443
+  name: forge-api
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: API - Forge
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to production.
+    Modification could lead to connection loss.
+  group_id: sg-0e7c204b18bcf4be4
+  inbound_rules: []
+  name: elasticache-ec2-production:i-08bdad4e7a016bb74
+  outbound_rules:
+  - destinations:
+    - SG:sg-0b7c9c8fe7154a171
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-7 created 2024-07-21T20:02:08.900Z
+  group_id: sg-04520491301198241
+  inbound_rules:
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3389
+  name: launch-wizard-7
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group for the public internet facing Application Load Balancer
+  group_id: sg-07ebc9c38ef8ec679
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - SG:sg-00d6ee4a2ec0fab34
+    - SG:sg-041fdae38d7e80c80
+    - SG:sg-0687e529c1dcb6623
+    - SG:sg-07ebc9c38ef8ec679
+    - SG:sg-0ddf11b6725e63bee
+    to_port: all
+  name: csb-shopboss-prod-use1-app-alb-asg-WebAsgSg-8WADEI6RIRTP
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: WebAsgSg
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-app-alb-asg/9e440f10-800e-11eb-98aa-0a987723f2d5
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-app-alb-asg
+  vpc_id: vpc-0763a38927252d771
+- description: Aurora MySQL Database Firewall
+  group_id: sg-0ae07510187b839ba
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - 10.0.0.0/8
+    - 10.197.24.0/24
+    - SG:sg-0ae07510187b839ba
+    to_port: all
+  - from_port: 3307
+    protocol: tcp
+    sources:
+    - 3.82.11.250/32
+    - 10.197.24.103/32
+    to_port: 3307
+  - from_port: 3306
+    protocol: tcp
+    sources:
+    - 69.16.228.0/27
+    - SG:sg-0687e529c1dcb6623
+    - SG:sg-09d1eb72bed76fbf4
+    to_port: 3307
+  name: csb-shopboss-prod-use1-svcs-mysql-aurora-dbSecGroupCluster-1X7YNUW3KHBVE
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: aurora-db-internal
+    aws:cloudformation:logical-id: dbSecGroupCluster
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-mysql-aurora/84e1e480-608b-11ec-8164-0efacc001f0b
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-mysql-aurora
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to production to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-07a3aea2e3923deee
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-0ece1d5715ff90da5
+    to_port: 6379
+  name: ec2-elasticache-i-04a3357a93ce47865:production
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: staging-fs
+  group_id: sg-04e873da936c87af6
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  name: staging-fs
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: staging
+  group_id: sg-00fba51a943e7878c
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - 0.0.0.0/0
+    to_port: all
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: staging443
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Aurora Lab SSH Security Group for Staging
+  group_id: sg-0f37ffa2ee6dc0ed5
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - 69.16.228.0/27
+    - 10.198.0.0/22
+    - SG:sg-09d1eb72bed76fbf4
+    to_port: all
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 44.233.140.106/32
+    - 44.241.236.118/32
+    to_port: 22
+  name: csb-shopboss-staging-use1-svcs-aurora-bastionSecGroup-1U2H3CY5GT2JY
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Aurora Lab SSH Security Group
+  group_id: sg-062d918890898b9ec
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - 69.16.228.0/27
+    - 10.198.0.0/22
+    - SG:sg-09d1eb72bed76fbf4
+    to_port: all
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 44.233.140.106/32
+    - 44.241.236.118/32
+    to_port: 22
+  name: csb-shopboss-prod-use1-svcs-aurora-bastionSecGroup-1U2H3CY5GT2JY
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: auroralab-bastion-host
+    aws:cloudformation:logical-id: bastionSecGroup
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-aurora/f1eddf50-9c7f-11eb-8ba6-12be65336f97
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-aurora
+  vpc_id: vpc-0763a38927252d771
+- description: Aurora Lab SSH Security Group
+  group_id: sg-00850209b24dfb592
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources: []
+    to_port: all
+  name: auroralab-bastion-host
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: auroralab-bastion-host
+    aws:cloudformation:logical-id: bastionSecGroup
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-aurora/9f018a60-55d7-11eb-8f7d-0e715b49d7c1
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-aurora
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to staging4 to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-000c15da759b34bf3
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-00a675b0b40b5c79e
+    to_port: 6379
+  name: ec2-elasticache-i-0fe77ddf838e48a5a:staging4
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group for AWS Cloud9 environment aws-cloud9-openai-4dc2f4f6c07a445685df08ea0f57fb72
+  group_id: sg-0893f3a534923dd85
+  inbound_rules: []
+  name: aws-cloud9-openai-4dc2f4f6c07a445685df08ea0f57fb72-InstanceSecurityGroup-1DSPGV2OEBTAA
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: aws-cloud9-openai-4dc2f4f6c07a445685df08ea0f57fb72
+    aws:cloud9:environment: 4dc2f4f6c07a445685df08ea0f57fb72
+    aws:cloud9:owner: AROA3362SBEQQQBIP6XHN:brobison@shopboss.aws
+    aws:cloudformation:logical-id: InstanceSecurityGroup
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/aws-cloud9-openai-4dc2f4f6c07a445685df08ea0f57fb72/c423c800-9547-11ee-acfd-0e71a481cd41
+    aws:cloudformation:stack-name: aws-cloud9-openai-4dc2f4f6c07a445685df08ea0f57fb72
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to production to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-0db9f9d55a91a32ea
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-0e2b944dc47c178cf
+    to_port: 6379
+  name: ec2-elasticache-i-03594ec360ca29edc:production
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security Group for Remote Users
+  group_id: sg-01c8729f8b0450d68
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources: []
+    to_port: 22
+  name: csb-shopboss-prod-use1-app-alb-SshRemoteAccessSG-1URUD945TVTS8
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: SshRemoteAccessSG
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-app-alb/8fa74ce0-7705-11eb-8975-1240b2c3208f
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-app-alb
+  vpc_id: vpc-0763a38927252d771
+- description: Security group for the public internet facing Application Load Balancer
+  group_id: sg-041fdae38d7e80c80
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 80
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: csb-shopboss-prod-use1-app-alb-asg-WebhostAlbSg-Y2KMY0IQWEOO
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: WebhostAlbSg
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-app-alb-asg/9e440f10-800e-11eb-98aa-0a987723f2d5
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-app-alb-asg
+  vpc_id: vpc-0763a38927252d771
+- description: AWS created security group for d-906762039c directory controllers
+  group_id: sg-0ee2cf12dcaf903de
+  inbound_rules:
+  - from_port: 445
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 445
+  - from_port: 138
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 138
+  - from_port: 464
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 464
+  - from_port: 464
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 464
+  - from_port: 389
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 389
+  - from_port: 53
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 53
+  - from_port: 389
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 389
+  - from_port: 123
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 123
+  - from_port: 445
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 445
+  - from_port: -1
+    protocol: icmp
+    sources:
+    - 0.0.0.0/0
+    to_port: -1
+  - from_port: 3268
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3269
+  - from_port: 1024
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 65535
+  - from_port: 88
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 88
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - SG:sg-0ee2cf12dcaf903de
+    to_port: all
+  - from_port: 135
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 135
+  - from_port: 636
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 636
+  - from_port: 53
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 53
+  - from_port: 88
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 88
+  name: d-906762039c_controllers
+  outbound_rules:
+  - destinations:
+    - SG:sg-0ee2cf12dcaf903de
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Innovative bastion host security group
+  group_id: sg-00ebb95db81ec4eab
+  inbound_rules:
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - 151.181.192.84/32
+    - 104.244.194.39/32
+    - 8.47.101.201/32
+    to_port: 3389
+  name: inno-bastion-sg
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-2 created 2022-09-19T14:03:40.820Z
+  group_id: sg-0c931883d1d154a72
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  name: launch-wizard-2
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Aurora MySQL Database Firewall
+  group_id: sg-0ed6fa37c551abd60
+  inbound_rules:
+  - from_port: 3306
+    protocol: tcp
+    sources:
+    - SG:sg-0687e529c1dcb6623
+    - SG:sg-0fdaf19412df44236
+    to_port: 3307
+  name: aurora-mysql-internal
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: aurora-db-internal
+    aws:cloudformation:logical-id: dbSecGroupCluster
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-aurora/9f018a60-55d7-11eb-8f7d-0e715b49d7c1
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-aurora
+  vpc_id: vpc-0763a38927252d771
+- description: launch-wizard-4 created 2023-12-06T18:26:55.155Z
+  group_id: sg-0ed6e2e563eda7d5a
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  name: launch-wizard-4
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: default VPC security group
+  group_id: sg-0a687c816ea3879bc
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 6379
+  name: default
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: test-shopboss-api
+  group_id: sg-0022ce8dbcbd13f16
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  name: test-shopboss-api
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-08dd2219722605f7e
+- description: Security group attached to staging2 to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-05a2455f750133763
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-0345f74570d6c8793
+    to_port: 6379
+  name: ec2-elasticache-i-0fe77ddf838e48a5a:staging2
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: no inbound network
+  group_id: sg-0bd9c7af194bd7628
+  inbound_rules:
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - 206.53.92.238/32
+    - 64.179.200.246/32
+    to_port: 3389
+  name: no_access
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to production.
+    Modification could lead to connection loss.
+  group_id: sg-0ece1d5715ff90da5
+  inbound_rules: []
+  name: elasticache-ec2-production:i-04a3357a93ce47865
+  outbound_rules:
+  - destinations:
+    - SG:sg-07a3aea2e3923deee
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security Group for Remote Users
+  group_id: sg-09d1eb72bed76fbf4
+  inbound_rules:
+  - from_port: 1194
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 1194
+  - from_port: 443
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  - from_port: 1194
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 1194
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: csb-shopboss-prod-use1-infra-cvpn-CvpnSg-X6JRAM4IXRCZ
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: CvpnSg
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-infra-cvpn/94d39510-a172-11eb-aa28-12f8925a37c4
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-infra-cvpn
+  vpc_id: vpc-0763a38927252d771
+- description: aurora-mysql-staging-bastion-host-securitygroup
+  group_id: sg-01fd4ad16f32b6fa5
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources: []
+    to_port: all
+  name: aurora-mysql-staging-bastion-sg
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: laravel-forge
+  group_id: sg-08c7beebd4a4af133
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - SG:sg-010500c7927036ca9
+    to_port: 80
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 159.203.150.232/32
+    - 159.203.150.216/32
+    - 45.55.124.124/32
+    - 107.178.58.42/32
+    - 151.181.192.84/32
+    - 181.131.243.253/32
+    - 165.227.248.218/32
+    to_port: 22
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - SG:sg-010500c7927036ca9
+    to_port: 443
+  name: laravel-forge
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-08dd2219722605f7e
+- description: ai created 2024-03-18T19:27:14.355Z
+  group_id: sg-0a88078095dad487b
+  inbound_rules:
+  - from_port: 80
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    - ::/0
+    to_port: 80
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - ::/0
+    to_port: all
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 104.188.20.182/32
+    - 45.55.124.124/32
+    - 159.203.150.216/32
+    - 177.254.23.135/32
+    - 159.203.150.232/32
+    to_port: 22
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  name: launch-wizard-6
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: 'API '
+  vpc_id: vpc-0cde1e2e5bd161d39
+- description: Security group attached to instances to securely connect to staging.
+    Modification could lead to connection loss.
+  group_id: sg-0ab0e6a0857fbe8de
+  inbound_rules: []
+  name: elasticache-ec2-staging:i-0fe77ddf838e48a5a
+  outbound_rules:
+  - destinations:
+    - SG:sg-0bde762d379cac197
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Domain Members
+  group_id: sg-0687e529c1dcb6623
+  inbound_rules:
+  - from_port: all
+    protocol: '-1'
+    sources:
+    - SG:sg-0a5f73f1414f2f6f7
+    - SG:sg-00ebb95db81ec4eab
+    to_port: all
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - 64.20.10.148/32
+    to_port: 3389
+  name: csb-shopboss-prod-use1-svcs-ad-mgmt-DomainMemberSG-1LSBP9X6QMQU9
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: DomainMemberSG
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-ad-mgmt/727579a0-4968-11eb-bf74-120346a4bf23
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-ad-mgmt
+  vpc_id: vpc-0763a38927252d771
+- description: Heimdall Proxy
+  group_id: sg-0dabc6e16b6ba78ab
+  inbound_rules:
+  - from_port: 8087
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 8087
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 22
+  - from_port: 8443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 8443
+  - from_port: 3306
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3307
+  name: csb-shopboss-prod-use1-svcs-heimdall-heimdallProxySecGroup-1XDPH7EZJMR4R
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    Name: heimdall-proxy
+    aws:cloudformation:logical-id: heimdallProxySecGroup
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-heimdall/ed490c50-213a-11ec-8b11-0ab4d69b0dbf
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-heimdall
+  vpc_id: vpc-0763a38927252d771
+- description: Enable RDP access from the Internet
+  group_id: sg-064ea7a8136c64bb7
+  inbound_rules:
+  - from_port: 3391
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3391
+  - from_port: 3389
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 3389
+  - from_port: 443
+    protocol: tcp
+    sources:
+    - 0.0.0.0/0
+    to_port: 443
+  - from_port: -1
+    protocol: icmp
+    sources:
+    - 0.0.0.0/0
+    to_port: -1
+  name: Remote-Desktop-Gateway-RemoteDesktopGatewaySG-1B2YQCAC5LL0C
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: RemoteDesktopGatewaySG
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/Remote-Desktop-Gateway/53862590-9b88-11eb-8abd-0e1c7f65113d
+    aws:cloudformation:stack-name: Remote-Desktop-Gateway
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to production to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-0f809cbf020931826
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-0baa2b37449cc5d42
+    to_port: 6379
+  name: ec2-elasticache-i-020f85e8dd63d693e:production
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security Group for Remote Users
+  group_id: sg-00d6ee4a2ec0fab34
+  inbound_rules: []
+  name: csb-shopboss-prod-use1-app-alb-asg-SshRemoteAccessSG-QB1WMFT8GWSN
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags:
+    aws:cloudformation:logical-id: SshRemoteAccessSG
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-app-alb-asg/9e440f10-800e-11eb-98aa-0a987723f2d5
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-app-alb-asg
+  vpc_id: vpc-0763a38927252d771
+- description: Security Group for FSx for Windows File Storage Access
+  group_id: sg-0aa8425807b46a54a
+  inbound_rules:
+  - from_port: 445
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 445
+  - from_port: 464
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 464
+  - from_port: 464
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 464
+  - from_port: 49152
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 65535
+  - from_port: 53
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 53
+  - from_port: 389
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 389
+  - from_port: 389
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 389
+  - from_port: 445
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 445
+  - from_port: 123
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 123
+  - from_port: 3268
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 3268
+  - from_port: 5985
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 5985
+  - from_port: 9389
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 9389
+  - from_port: 88
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 88
+  - from_port: 135
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 135
+  - from_port: 636
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 636
+  - from_port: 53
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 53
+  - from_port: 3269
+    protocol: tcp
+    sources:
+    - 10.197.20.0/24
+    to_port: 3269
+  - from_port: 88
+    protocol: udp
+    sources:
+    - 10.197.20.0/24
+    to_port: 88
+  name: csb-shopboss-staging-use1-svcs-fsx-FSxSecurityGroup
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to instances to securely connect to staging2.
+    Modification could lead to connection loss.
+  group_id: sg-0345f74570d6c8793
+  inbound_rules: []
+  name: elasticache-ec2-staging2:i-0fe77ddf838e48a5a
+  outbound_rules:
+  - destinations:
+    - SG:sg-05a2455f750133763
+    from_port: 6379
+    protocol: tcp
+    to_port: 6379
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Zerotier SG
+  group_id: sg-082c517a783a10329
+  inbound_rules:
+  - from_port: 22
+    protocol: tcp
+    sources:
+    - 151.181.192.84/32
+    to_port: 22
+  - from_port: 9993
+    protocol: udp
+    sources:
+    - 0.0.0.0/0
+    to_port: 9993
+  name: ZeroTier-SG
+  outbound_rules:
+  - destinations:
+    - 0.0.0.0/0
+    from_port: all
+    protocol: '-1'
+    to_port: all
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to staging3 to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-0c8a286c7eb2e2e6e
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-00bc8c13eac669dfb
+    to_port: 6379
+  name: ec2-elasticache-i-0fe77ddf838e48a5a:staging3
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+- description: Security group attached to production to allow EC2 instances with specific
+    security groups attached to connect to the database. Modification could lead to
+    connection loss.
+  group_id: sg-03a6a965a5bdc6a28
+  inbound_rules:
+  - from_port: 6379
+    protocol: tcp
+    sources:
+    - SG:sg-06ed99faf9532368c
+    to_port: 6379
+  name: ec2-elasticache-i-0d23c577d740198c9:production
+  outbound_rules: []
+  tags: {}
+  vpc_id: vpc-0763a38927252d771
+
+
+# FILE: active-directory.yml
+active_directory:
+  access_control:
+    ad_groups: unknown
+  deployment: self-hosted
+  description: 'Active Directory is hosted on an EC2 instance and used for authenticating
+    user access to Windows servers. IAM users are not used for server login.
+
+    '
+  domain_controller_instance_id: i-06ef75199feb6f74f
+  domain_name: shopboss-aws.com
+  integration:
+    aws_directory_service: false
+    join_method: unknown
+  managed_in: ec2
+  notes:
+  - AD is hosted on EC2 instance i-06ef75199feb6f74f.
+  - Users authenticate with their AD credentials.
+  - Domain name is assumed to be shopboss-aws.com.
+
+
+# FILE: igws.yaml
+internet_gateways:
+- id: igw-05e8982a6b1c8f2a9
+  tags: {}
+  vpc_attachments:
+  - state: available
+    vpc_id: vpc-0cde1e2e5bd161d39
+- id: igw-077f2ae8032fd4fa7
+  tags:
+    Name: new-shop-boss-igw
+  vpc_attachments:
+  - state: available
+    vpc_id: vpc-08dd2219722605f7e
+- id: igw-0e6b94489c146d459
+  tags:
+    aws:cloudformation:logical-id: IGW
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-infra-vpc1/cf1dbb90-454e-11eb-a9b9-0af9e889672b
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-infra-vpc1
+  vpc_attachments:
+  - state: available
+    vpc_id: vpc-0763a38927252d771
+
+
+# FILE: bastion-staging.yaml
+access_method: AWS SSM Session Manager
+connected_vpcs:
+- Staging Private Subnets
+- Staging MySQL
+dns:
+  interface: ens5
+  resolver: systemd-resolved (127.0.0.53)
+  search_domain: shopboss.aws
+  upstream_servers:
+  - 10.197.20.184
+  - 10.197.20.142
+  uses_ad_dns: true
+instance_id: i-0c54b4c96a849842e
+ip_address: 10.197.20.29
+notes:
+- This host is used for both general staging access and staging MySQL access.
+- SSM agent is active; no RDP or SSH access is configured.
+- DNS is routed through AD servers for internal domain resolution.
+platform: Ubuntu 24.04
+rdp_enabled: false
+role: Staging Bastion + MySQL Access
+server_name: aurora-mysql-staging-bastion
+ssh_enabled: false
+ssm_enabled: true
+users: IAM-authenticated SSM sessions
+
+
+# FILE: alb.yaml
+target_groups:
+- arn: arn:aws:elasticloadbalancing:us-east-1:815965276449:targetgroup/api-staging/2ee37a275d55ba1a
+  health_check_interval: 30
+  health_check_path: /api/server-test-endpoint
+  health_check_timeout: 5
+  healthy_threshold: 5
+  load_balancers:
+  - arn:aws:elasticloadbalancing:us-east-1:815965276449:loadbalancer/app/api-shopboss-staging/17a01e9739c32ca0
+  matcher: '200'
+  name: api-staging
+  port: 80
+  protocol: HTTP
+  target_type: instance
+  unhealthy_threshold: 2
+  vpc_id: vpc-08dd2219722605f7e
+- arn: arn:aws:elasticloadbalancing:us-east-1:815965276449:targetgroup/csb-s-Webho-9YZX636IXBGE/06d7b17e91c72703
+  health_check_interval: 5
+  health_check_path: /sbpi2/monitor/monitor.php
+  health_check_timeout: 3
+  healthy_threshold: 2
+  load_balancers:
+  - arn:aws:elasticloadbalancing:us-east-1:815965276449:loadbalancer/app/csb-s-Webho-TRKWCFGU7R3V/2be8e8651d8739f5
+  matcher: 200-499
+  name: csb-s-Webho-9YZX636IXBGE
+  port: 80
+  protocol: HTTP
+  target_type: instance
+  unhealthy_threshold: 2
+  vpc_id: vpc-0763a38927252d771
+- arn: arn:aws:elasticloadbalancing:us-east-1:815965276449:targetgroup/sb-api2024/a6aa9000d312f21a
+  health_check_interval: 30
+  health_check_path: /api/server-test-endpoint
+  health_check_timeout: 5
+  healthy_threshold: 5
+  load_balancers:
+  - arn:aws:elasticloadbalancing:us-east-1:815965276449:loadbalancer/app/api-shopboss/fa4b25240cc72a38
+  matcher: '200'
+  name: sb-api2024
+  port: 80
+  protocol: HTTP
+  target_type: instance
+  unhealthy_threshold: 2
+  vpc_id: vpc-08dd2219722605f7e
+- arn: arn:aws:elasticloadbalancing:us-east-1:815965276449:targetgroup/staging/f1468e8a24769e4c
+  health_check_interval: 5
+  health_check_path: /sbpi2/monitor/monitor.php
+  health_check_timeout: 3
+  healthy_threshold: 2
+  load_balancers:
+  - arn:aws:elasticloadbalancing:us-east-1:815965276449:loadbalancer/app/staging/fe4d56c6a2a6b8ba
+  matcher: 200-499
+  name: staging
+  port: 80
+  protocol: HTTP
+  target_type: instance
+  unhealthy_threshold: 2
+  vpc_id: vpc-0763a38927252d771
+
+
+# FILE: vpcs.yml
+vpcs:
+- cidr_block: 10.197.20.0/24
+  dhcp_options_id: dopt-0dfec96f2679962bf
+  id: vpc-0763a38927252d771
+  is_default: false
+  name: ShopBoss
+  region: us-east-1
+  state: available
+- cidr_block: 10.197.24.0/24
+  dhcp_options_id: dopt-bbd0a8c1
+  id: vpc-08dd2219722605f7e
+  is_default: false
+  name: new-shopboss
+  region: us-east-1
+  state: available
+- cidr_block: 10.0.0.0/16
+  dhcp_options_id: dopt-bbd0a8c1
+  id: vpc-0cde1e2e5bd161d39
+  is_default: false
+  name: shopboss-api
+  region: us-east-1
+  state: available
+
+
+# FILE: route-tables.yaml
+route_tables:
+- associations:
+  - main: true
+    state: associated
+    subnet_id: null
+  - main: false
+    state: associated
+    subnet_id: subnet-095ef989255a76742
+  id: rtb-03d9c6f1b9291982c
+  name: ShopBoss Private Route 3
+  routes:
+  - DestinationCidrBlock: 10.197.20.0/24
+    GatewayId: local
+  - DestinationCidrBlock: 172.28.0.0/16
+    InstanceId: i-0c21b4b10a153b037
+    InstanceOwnerId: '815965276449'
+    NetworkInterfaceId: eni-08f5153f6f5ae14c4
+  - DestinationCidrBlock: 10.0.0.0/16
+    VpcPeeringConnectionId: pcx-003adbd4a92cead0f
+  - DestinationCidrBlock: 10.0.0.0/8
+    TransitGatewayId: tgw-03712f57b33350ec1
+  - DestinationCidrBlock: 0.0.0.0/0
+    NatGatewayId: nat-0d600bee1c3c56636
+  tags:
+    Name: ShopBoss Private Route 3
+  vpc_id: vpc-0763a38927252d771
+
+
+# FILE: nat-gateways.yaml
+nat_gateways:
+- connectivity_type: public
+  id: nat-095645b4b4bbe4850
+  name: new-shopboss-natgw-1
+  private_ip: 10.197.24.49
+  public_ip: 34.230.198.38
+  state: available
+  subnet_id: subnet-0ac6d1d2596533546
+  tags:
+    Name: new-shopboss-natgw-1
+  vpc_id: vpc-08dd2219722605f7e
+- connectivity_type: public
+  id: nat-0b40eaa088b8dd89c
+  name: null
+  private_ip: 10.197.20.13
+  public_ip: 34.202.105.201
+  state: available
+  subnet_id: subnet-0289d7bff205495d1
+  tags:
+    aws:cloudformation:logical-id: NATGateway
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-infra-vpc1/cf1dbb90-454e-11eb-a9b9-0af9e889672b
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-infra-vpc1
+  vpc_id: vpc-0763a38927252d771
+- connectivity_type: public
+  id: nat-062be8305014779a6
+  name: new-shopboss-natgw-2
+  private_ip: 10.197.24.124
+  public_ip: 3.224.10.45
+  state: available
+  subnet_id: subnet-0590671af10f4e7ad
+  tags:
+    Name: new-shopboss-natgw-2
+  vpc_id: vpc-08dd2219722605f7e
+- connectivity_type: public
+  id: nat-0d600bee1c3c56636
+  name: null
+  public_ip: 54.166._
+  state: available
+  subnet_id: subnet-09766f89de84be6ac
+  vpc_id: vpc-0763a38927252d771
+
+
+# FILE: dns.yaml
+cloudflare:
+  note: Primary DNS provider. Records should be exported from Cloudflare dashboard
+    for complete visibility.
+  zones:
+  - shopboss.io
+  - shopboss.net
+  - other active production zones
+route53:
+- records:
+  - name: shopboss-aws.com
+    ttl: 172800
+    type: NS
+    values:
+    - ns-1496.awsdns-59.org.
+    - ns-1713.awsdns-22.co.uk.
+    - ns-277.awsdns-34.com.
+    - ns-1003.awsdns-61.net.
+  - name: shopboss-aws.com
+    ttl: 900
+    type: SOA
+    values:
+    - ns-1496.awsdns-59.org. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
+  - name: _8e807b1967f7e41f7b945a3c1660cc83.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - _67594ee11cec9ba529854b987e275154.bbfvkzsszw.acm-validations.aws.
+  - name: bastion-staging.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - ec2-54-147-207-67.compute-1.amazonaws.com
+  - name: bastion.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - ec2-54-160-211-22.compute-1.amazonaws.com
+  - name: _3fea0f33508bf8cedda595f7bcf6a1fc.cvpn.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - _00fce9d3aa3bdc18b837f92308dc2866.bbfvkzsszw.acm-validations.aws.
+  - name: proxy.db.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - ip-10-197-20-143.ec2.internal
+  - name: db.dev.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - staging-022525-cluster.cluster-cczxexsz3oly.us-east-1.rds.amazonaws.com
+  - name: db.dev.ms.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - staging-ms-10092024-cluster.cluster-cczxexsz3oly.us-east-1.rds.amazonaws.com
+  - name: db.prod.ms.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - production-ms-cluster.cluster-cczxexsz3oly.us-east-1.rds.amazonaws.com
+  - name: bastion.prod.shopboss-aws.com
+    ttl: 300
+    type: A
+    values:
+    - 10.197.20.7
+  - name: db.prod.shopboss-aws.com
+    ttl: 30
+    type: CNAME
+    values:
+    - production-cluster.cluster-cczxexsz3oly.us-east-1.rds.amazonaws.com
+  - name: rdp.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - Remot-ALBRe-1SNUPOEJ1MSBN-9395dc3a69f83e04.elb.us-east-1.amazonaws.com
+  - name: _81ab12e23a1293a3b104d4925abf3157.rdp.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - _383db26e678c510963d15c41a8faa259.rlltrpyzyf.acm-validations.aws.
+  - name: _75ef3247e9bded7bcec999a927e8f039.test.shopboss-aws.com
+    ttl: 300
+    type: CNAME
+    values:
+    - _72f61d5d5538159d90c7a623fbbd30d6.rlltrpyzyf.acm-validations.aws.
+  zone: shopboss-aws.com
+- records:
+  - name: shopboss.io
+    ttl: 172800
+    type: NS
+    values:
+    - ns-993.awsdns-60.net.
+    - ns-1951.awsdns-51.co.uk.
+    - ns-1431.awsdns-50.org.
+    - ns-80.awsdns-10.com.
+  - name: shopboss.io
+    ttl: 900
+    type: SOA
+    values:
+    - ns-993.awsdns-60.net. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
+  zone: shopboss.io
+
+
+# FILE: bastion-production.yaml
+access_method: AWS SSM Session Manager
+connected_vpcs:
+- Private subnets
+- Production services
+dns:
+  interface: Ethernet 3
+  resolver: Windows DNS Client
+  upstream_servers:
+  - 10.197.20.184
+  - 10.197.20.142
+  uses_ad_dns: true
+instance_id: i-033f2b4d9c68fbdc1
+ip_address: 10.197.20.12
+notes:
+- Confirmed accessible via SSM using IAM role.
+- DNS resolution provided by AD servers on 10.197.20.184 and .142.
+- "No RDP or SSH access exposed \u2014 secure by design."
+- Host is used for secure access to production infrastructure.
+platform: Windows Server
+rdp_enabled: false
+role: Production Bastion Host
+server_name: inno-bastion-host
+ssh_enabled: false
+ssm_enabled: true
+users: IAM-authenticated SSM sessions
+
+
+# FILE: subnets.yaml
+subnets:
+- availability_zone: us-east-1c
+  available_ips: 58
+  cidr_block: 10.197.24.128/26
+  id: subnet-007b79030689352b7
+  name: new-shopboss-private-1
+  public_ip_on_launch: true
+  state: available
+  tags:
+    Name: new-shopboss-private-1
+  vpc_id: vpc-08dd2219722605f7e
+- availability_zone: us-east-1a
+  available_ips: 251
+  cidr_block: 10.0.2.0/24
+  id: subnet-06424f62c916b1b54
+  name: admin-api
+  public_ip_on_launch: false
+  state: available
+  tags:
+    Name: admin-api
+  vpc_id: vpc-0cde1e2e5bd161d39
+- availability_zone: us-east-1d
+  available_ips: 58
+  cidr_block: 10.197.24.192/26
+  id: subnet-0c4b3e027703cb0e6
+  name: new-shopboss-private-2
+  public_ip_on_launch: false
+  state: available
+  tags:
+    Name: new-shopboss-private-2
+  vpc_id: vpc-08dd2219722605f7e
+- availability_zone: us-east-1b
+  available_ips: 244
+  cidr_block: 10.0.1.0/24
+  id: subnet-04eb1b4ac9fee203e
+  name: API
+  public_ip_on_launch: true
+  state: available
+  tags:
+    Name: API
+  vpc_id: vpc-0cde1e2e5bd161d39
+- availability_zone: us-east-1a
+  available_ips: 55
+  cidr_block: 10.197.24.0/26
+  id: subnet-0ac6d1d2596533546
+  name: new-shopboss-public-1
+  public_ip_on_launch: true
+  state: available
+  tags:
+    Name: new-shopboss-public-1
+  vpc_id: vpc-08dd2219722605f7e
+
+
+# FILE: bastion-production-mysql.yaml
+access_method: AWS SSM Session Manager
+connected_vpcs:
+- Production MySQL Subnets
+dns:
+  resolver: systemd-resolved (127.0.0.53)
+  search_domain: shopboss.aws
+  upstream_servers: Not visible (likely AD DNS like other bastions)
+  uses_ad_dns: true
+instance_id: i-0ddb0a3301e63b1d3
+ip_address: unknown
+notes:
+- Confirmed hostname is 'bastion'.
+- Accessed using SSM with ssm-user.
+- Likely Ubuntu or Amazon Linux with systemd-resolved DNS stub.
+- Used to access MySQL databases in production environment.
+- DNS points to local stub (127.0.0.53) with search domain shopboss.aws.
+platform: Linux (distro not specified)
+rdp_enabled: false
+role: Production MySQL Bastion Host
+server_name: aurora-mysql-bastion
+ssh_enabled: false
+ssm_enabled: true
+users: IAM-authenticated SSM sessions
+
+
+# FILE: global-accelerator.yaml
+accelerators:
+- arn: arn:aws:globalaccelerator::815965276449:accelerator/9d987110-5799-431f-8e2f-844f86451789
+  dns: a92cd2c3650426c78.awsglobalaccelerator.com
+  ip_addresses:
+  - 75.2.13.228
+  - 99.83.247.10
+  listeners:
+  - arn: arn:aws:globalaccelerator::815965276449:accelerator/9d987110-5799-431f-8e2f-844f86451789/listener/a9ed0074
+    client_affinity: SOURCE_IP
+    port_ranges:
+    - '80'
+    - '443'
+    protocol: TCP
+  name: GlobalAcceleratorUse1
+  status: DEPLOYED
+- arn: arn:aws:globalaccelerator::815965276449:accelerator/4898bf04-e61a-4d91-8c35-d3350b409d2d
+  dns: a646070dcc894bba5.awsglobalaccelerator.com
+  ip_addresses:
+  - 13.248.146.192
+  - 3.33.234.51
+  listeners:
+  - arn: arn:aws:globalaccelerator::815965276449:accelerator/4898bf04-e61a-4d91-8c35-d3350b409d2d/listener/aac21672
+    client_affinity: NONE
+    port_ranges:
+    - '443'
+    - '80'
+    protocol: TCP
+  name: stagingAccelerator
+  status: DEPLOYED
+
+
+# FILE: ssm.yaml
+managed_instances:
+- agent_version: 3.3.1957.0
+  instance_id: i-033f2b4d9c68fbdc1
+  ip: 10.197.20.12
+  last_ping: '2025-03-31T13:56:11.332000-07:00'
+  name: EC2AMAZ-H3AQU2B.shopboss.aws
+  platform: Microsoft Windows Server 2022 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-06ef75199feb6f74f
+  ip: 10.197.20.145
+  last_ping: '2025-03-31T13:54:27.211000-07:00'
+  name: AD1.shopboss.aws
+  platform: Microsoft Windows Server 2019 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-0fe77ddf838e48a5a
+  ip: 10.197.20.134
+  last_ping: '2025-03-31T13:52:56.379000-07:00'
+  name: staging.shopboss.aws
+  platform: Microsoft Windows Server 2019 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-0d23c577d740198c9
+  ip: 10.197.20.187
+  last_ping: '2025-03-31T13:52:09.987000-07:00'
+  name: SBWEBHOST04.shopboss.aws
+  platform: Microsoft Windows Server 2019 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-037ebcee869758fe1
+  ip: 10.197.20.181
+  last_ping: '2025-03-31T13:54:32.618000-07:00'
+  name: SBWEBHOST06.shopboss.aws
+  platform: Microsoft Windows Server 2019 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-0c21b4b10a153b037
+  ip: 10.197.20.5
+  last_ping: '2025-03-31T13:52:07.121000-07:00'
+  name: ip-10-197-20-5.shopboss.aws
+  platform: Amazon Linux
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-020f85e8dd63d693e
+  ip: 10.197.20.183
+  last_ping: '2025-03-31T13:55:30.833000-07:00'
+  name: SBWEBHOST05.shopboss.aws
+  platform: Microsoft Windows Server 2019 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-0ddb0a3301e63b1d3
+  ip: 10.197.20.7
+  last_ping: '2025-03-31T13:54:12.507000-07:00'
+  name: bastion
+  platform: Ubuntu
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-03594ec360ca29edc
+  ip: 10.197.20.170
+  last_ping: '2025-03-31T13:53:13.676000-07:00'
+  name: SBWEBHOST03.shopboss.aws
+  platform: Microsoft Windows Server 2019 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.1957.0
+  instance_id: i-013c8b7f3f3a3d4d3
+  ip: 10.197.20.153
+  last_ping: '2025-03-31T13:53:14.278000-07:00'
+  name: ScriptServer.shopboss.aws
+  platform: Microsoft Windows Server 2019 Datacenter
+  ssm_connected: Success
+  status: Online
+- agent_version: 3.3.987.0
+  instance_id: i-0c54b4c96a849842e
+  ip: 10.197.20.29
+  last_ping: '2025-03-31T13:53:19.639000-07:00'
+  name: ip-10-197-20-29
+  platform: Ubuntu
+  ssm_connected: Success
+  status: Online
+parameter_store:
+- description: shopboss_prod EC2 key pair
+  key_id: alias/aws/ssm
+  last_modified: '2020-12-27T11:22:06.373000-08:00'
+  name: shopboss_prod.pem
+  tier: Standard
+  type: SecureString
+
+
+# FILE: fsx.yaml
+filesystems:
+- active_directory_id: d-906762039c
+  aliases:
+  - fs.shopboss.aws
+  audit_logs:
+    AuditLogDestination: arn:aws:logs:us-east-1:815965276449:log-group:/aws/fsx/windows:log-stream:audit_fs-0c9a8120f0449193a
+    FileAccessAuditLogLevel: DISABLED
+    FileShareAccessAuditLogLevel: SUCCESS_AND_FAILURE
+  backup_window: 01:00
+  capacity_gib: 11860
+  created: '2020-12-29T06:42:01.012000-08:00'
+  deployment_type: MULTI_AZ_1
+  dns_name: amznfsxjynemgva.shopboss.aws
+  domain: shopboss.aws
+  id: fs-0c9a8120f0449193a
+  iops: 35580
+  lifecycle: AVAILABLE
+  maintenance_window: '7:02:00'
+  name: FSx
+  preferred_ip: 10.197.20.144
+  remote_admin_endpoint: amznfsxokxixcsy.shopboss.aws
+  retention_days: 7
+  subnets:
+  - subnet-0fd416bcd058b1ec3
+  - subnet-0dd43bb13d12dff57
+  tags:
+    Name: FSx
+    aws:cloudformation:logical-id: WindowsFSx
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-prod-use1-svcs-fsx/88428e90-49df-11eb-8c75-127fd1b91345
+    aws:cloudformation:stack-name: csb-shopboss-prod-use1-svcs-fsx
+  throughput_mbps: 64
+  type: WINDOWS
+  vpc_id: vpc-0763a38927252d771
+- active_directory_id: d-906762039c
+  aliases:
+  - ent.shopboss.aws
+  audit_logs:
+    FileAccessAuditLogLevel: DISABLED
+    FileShareAccessAuditLogLevel: DISABLED
+  backup_window: 03:00
+  capacity_gib: 1300
+  created: '2021-02-11T12:19:24.892000-08:00'
+  deployment_type: MULTI_AZ_1
+  dns_name: amznfsxcrv8ogca.shopboss.aws
+  domain: shopboss.aws
+  id: fs-049f97e96fda05c97
+  iops: 3900
+  lifecycle: AVAILABLE
+  maintenance_window: '4:06:00'
+  name: EnterpriseStorage
+  preferred_ip: 10.197.20.136
+  remote_admin_endpoint: amznfsx5mt7tddp.shopboss.aws
+  retention_days: 7
+  subnets:
+  - subnet-0fd416bcd058b1ec3
+  - subnet-09766f89de84be6ac
+  tags:
+    Name: EnterpriseStorage
+  throughput_mbps: 64
+  type: WINDOWS
+  vpc_id: vpc-0763a38927252d771
+- active_directory_id: d-906762039c
+  aliases:
+  - fs-staging.shopboss.aws
+  audit_logs:
+    FileAccessAuditLogLevel: DISABLED
+    FileShareAccessAuditLogLevel: DISABLED
+  backup_window: 01:00
+  capacity_gib: 500
+  created: '2024-08-05T15:16:38.029000-07:00'
+  deployment_type: MULTI_AZ_1
+  dns_name: amznfsxfli5s4s4.shopboss.aws
+  domain: shopboss.aws
+  id: fs-0e4de156d8508792f
+  iops: 1500
+  lifecycle: AVAILABLE
+  maintenance_window: '7:02:00'
+  name: FSx-Staging
+  preferred_ip: 10.197.20.152
+  remote_admin_endpoint: amznfsxfjcprz0x.shopboss.aws
+  retention_days: 7
+  subnets:
+  - subnet-0fd416bcd058b1ec3
+  - subnet-0dd43bb13d12dff57
+  tags:
+    Name: FSx-Staging
+    aws:cloudformation:logical-id: WindowsFSx
+    aws:cloudformation:stack-id: arn:aws:cloudformation:us-east-1:815965276449:stack/csb-shopboss-staging-use1-svcs-fsx/ddc447a0-5372-11ef-a3ea-0e3cbd1680b7
+    aws:cloudformation:stack-name: csb-shopboss-staging-use1-svcs-fsx
+  throughput_mbps: 64
+  type: WINDOWS
+  vpc_id: vpc-0763a38927252d771
+
+
+# FILE: s3-full.yaml
+buckets:
+- created: '2020-12-15T21:06:20+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: cf-templates-g6myvinkm2jq-us-east-1
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2024-08-05T21:32:10+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: cf-templates-g6myvinkm2jq0-us-east-1
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2021-01-21T18:57:55+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          KMSMasterKeyID: alias/aws/s3
+          SSEAlgorithm: aws:kms
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: config-bucket-815965276449
+  public_access:
+    PolicyStatus:
+      IsPublic: false
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2021-02-24T22:25:29+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: csb-shopboss-prod-use1-app-alb-alblogbucket-mbuzpy00hmie
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2020-12-28T03:05:13+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging:
+    LoggingEnabled:
+      TargetBucket: csb-shopboss-prod-use1-infra-init-s3loggingbucket-1us9v62nkb8u4
+      TargetPrefix: 815965276449/BuildArtifacts/
+  name: csb-shopboss-prod-use1-infra-buildartifactsbucket-1wc3t3lhw0j5r
+  public_access:
+    PolicyStatus:
+      IsPublic: false
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2021-02-01T16:48:04+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging:
+    LoggingEnabled:
+      TargetBucket: csb-shopboss-prod-use1-infra-init-s3loggingbucket-1us9v62nkb8u4
+      TargetPrefix: 815965276449/athena-output/
+  name: csb-shopboss-prod-use1-infra-i-athenaoutputbucket-1fi0v734o7khs
+  public_access:
+    PolicyStatus:
+      IsPublic: false
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2022-05-27T22:05:37+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging:
+    LoggingEnabled:
+      TargetBucket: csb-shopboss-prod-use1-infra-init-s3loggingbucket-1us9v62nkb8u4
+      TargetPrefix: ''
+  name: csb-shopboss-prod-use1-infra-init-reportsbucket-2nkb3zz5gqja
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2020-12-18T19:51:36+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: csb-shopboss-prod-use1-infra-init-s3loggingbucket-1us9v62nkb8u4
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2024-01-22T18:06:43+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: true
+  lifecycle: invalid
+  logging: invalid
+  name: customers-ss
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2022-06-10T19:51:57+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          KMSMasterKeyID: alias/aws/s3
+          SSEAlgorithm: aws:kms
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: innovative-cur-shopboss
+  public_access:
+    PolicyStatus:
+      IsPublic: false
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2021-03-03T22:14:06+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          KMSMasterKeyID: alias/aws/s3
+          SSEAlgorithm: aws:kms
+        BucketKeyEnabled: false
+  lifecycle:
+    Rules:
+    - AbortIncompleteMultipartUpload:
+        DaysAfterInitiation: 1
+      Expiration:
+        Days: 10
+      Filter:
+        Prefix: AWSLogs/
+      ID: bucket-lifecycle
+      NoncurrentVersionExpiration:
+        NoncurrentDays: 1
+      Status: Enabled
+  logging: invalid
+  name: shopboss-alb-access-logs
+  public_access:
+    PolicyStatus:
+      IsPublic: false
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2023-02-23T21:02:27+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: true
+  lifecycle: invalid
+  logging: invalid
+  name: shopboss-ui
+  public_access:
+    PolicyStatus:
+      IsPublic: true
+  region:
+    LocationConstraint: us-west-2
+  versioning: invalid
+- created: '2024-02-01T17:01:03+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: vapor-us-east-1-1706806862
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2024-02-01T17:39:17+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: vapor-us-east-1-1706809156
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2024-02-01T17:01:03+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: vapor-us-east-1-assets-1706806862
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+- created: '2024-02-01T17:39:18+00:00'
+  encryption:
+    ServerSideEncryptionConfiguration:
+      Rules:
+      - ApplyServerSideEncryptionByDefault:
+          SSEAlgorithm: AES256
+        BucketKeyEnabled: false
+  lifecycle: invalid
+  logging: invalid
+  name: vapor-us-east-1-assets-1706809156
+  public_access: invalid
+  region:
+    LocationConstraint: null
+  versioning: invalid
+
+
+# FILE: s3.yaml
+buckets:
+- created: '2020-12-15T21:06:20+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: cf-templates-g6myvinkm2jq-us-east-1
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2024-08-05T21:32:10+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: cf-templates-g6myvinkm2jq0-us-east-1
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2021-01-21T18:57:55+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: config-bucket-815965276449
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2021-02-24T22:25:29+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: csb-shopboss-prod-use1-app-alb-alblogbucket-mbuzpy00hmie
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2020-12-28T03:05:13+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: csb-shopboss-prod-use1-infra-buildartifactsbucket-1wc3t3lhw0j5r
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2021-02-01T16:48:04+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: csb-shopboss-prod-use1-infra-i-athenaoutputbucket-1fi0v734o7khs
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2022-05-27T22:05:37+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: csb-shopboss-prod-use1-infra-init-reportsbucket-2nkb3zz5gqja
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2020-12-18T19:51:36+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: csb-shopboss-prod-use1-infra-init-s3loggingbucket-1us9v62nkb8u4
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2024-01-22T18:06:43+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: customers-ss
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2022-06-10T19:51:57+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: innovative-cur-shopboss
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2021-03-03T22:14:06+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: shopboss-alb-access-logs
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2023-02-23T21:02:27+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: shopboss-ui
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2024-02-01T17:01:03+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: vapor-us-east-1-1706806862
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2024-02-01T17:39:17+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: vapor-us-east-1-1706809156
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2024-02-01T17:01:03+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: vapor-us-east-1-assets-1706806862
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+- created: '2024-02-01T17:39:18+00:00'
+  encryption: unknown
+  lifecycle: unknown
+  logging: unknown
+  name: vapor-us-east-1-assets-1706809156
+  public_access: unknown
+  region: unknown
+  versioning: unknown
+
+
+# FILE: cloudwatch.yaml
+log_groups:
+- bytes_stored: 150238
+  metric_filters: 0
+  name: /aws/fsx/windows
+  retention_days: 3
+- bytes_stored: 12857373
+  metric_filters: 0
+  name: /aws/lambda/AWSWAFSecurityAutomations-ReputationListsParser-1BP9LKUA3FVNO
+  retention_days: 30
+- bytes_stored: 61623047
+  metric_filters: 0
+  name: /aws/lambda/IngestELBLogsToCloudWatch
+  retention_days: Never expires
+- bytes_stored: 7089
+  metric_filters: 0
+  name: /aws/lambda/RDS100plusupdates
+  retention_days: Never expires
+- bytes_stored: 4319657
+  metric_filters: 0
+  name: /aws/lambda/alb-log-reports-dev-run_jobs
+  retention_days: Never expires
+- bytes_stored: 106262299
+  metric_filters: 0
+  name: /aws/rds/cluster/production-cluster/error
+  retention_days: Never expires
+- bytes_stored: 296533236
+  metric_filters: 0
+  name: /aws/rds/cluster/production-cluster/slowquery
+  retention_days: Never expires
+- bytes_stored: 2042423
+  metric_filters: 0
+  name: /aws/rds/cluster/production-ms-cluster/error
+  retention_days: Never expires
+- bytes_stored: 103622302
+  metric_filters: 0
+  name: /aws/rds/cluster/production-ms-cluster/slowquery
+  retention_days: Never expires
+- bytes_stored: 342129
+  metric_filters: 0
+  name: /aws/rds/cluster/staging-070524-cluster/error
+  retention_days: Never expires
+- bytes_stored: 6038485
+  metric_filters: 0
+  name: /aws/rds/cluster/staging-070524-cluster/slowquery
+  retention_days: Never expires
+- bytes_stored: 696113372186
+  metric_filters: 0
+  name: /elb/access-logs
+  retention_days: Never expires
+- bytes_stored: 2019338935
+  metric_filters: 0
+  name: API-Gateway-Execution-Logs_43mwuvdtt2/production
+  retention_days: Never expires
+- bytes_stored: 1893814
+  metric_filters: 0
+  name: API-Gateway-Execution-Logs_i8ukwyqz27/dev
+  retention_days: Never expires
+- bytes_stored: 0
+  metric_filters: 0
+  name: AWSWAFSecurityAutomations-ApiGatewayBadBotStageAccessLogGroup-qmiIlHysLjdk
+  retention_days: Never expires
+- bytes_stored: 1881520
+  metric_filters: 0
+  name: Application-Events
+  retention_days: Never expires
+- bytes_stored: 905405806
+  metric_filters: 0
+  name: Application-Events-Staging
+  retention_days: Never expires
+- bytes_stored: 65988394749
+  metric_filters: 1
+  name: IIS-Logs
+  retention_days: Never expires
+- bytes_stored: 163346579
+  metric_filters: 0
+  name: RDSOSMetrics
+  retention_days: 30
+- bytes_stored: 811733914
+  metric_filters: 0
+  name: Security-Events
+  retention_days: Never expires
+- bytes_stored: 132275802
+  metric_filters: 0
+  name: Security-Events-Staging
+  retention_days: Never expires
+- bytes_stored: 1145043828
+  metric_filters: 0
+  name: System-Events
+  retention_days: Never expires
+- bytes_stored: 1157081350
+  metric_filters: 0
+  name: System-Events-Staging
+  retention_days: Never expires
+- bytes_stored: 191651469294
+  metric_filters: 0
+  name: aws-waf-logs-AWSWAFSecurityAutomations
+  retention_days: 90
+- bytes_stored: 306091312
+  metric_filters: 0
+  name: phperrors-ms
+  retention_days: Never expires
+- bytes_stored: 27829547
+  metric_filters: 0
+  name: phperrors-ss
+  retention_days: Never expires
+- bytes_stored: 2893362
+  metric_filters: 0
+  name: phperrors-staging-ms
+  retention_days: Never expires
+- bytes_stored: 7166457
+  metric_filters: 0
+  name: phperrors-staging-ss
+  retention_days: Never expires
+- bytes_stored: 1122886
+  metric_filters: 0
+  name: phperrors-supporting
+  retention_days: Never expires
+- bytes_stored: 198386118
+  metric_filters: 0
+  name: vpc-flow-logs-rejects
+  retention_days: 3
+- bytes_stored: 119023
+  metric_filters: 0
+  name: vpc/clientvpn
+  retention_days: 14
+
+
+# FILE: cloudwatch-alarms.yaml
+alarms:
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 2
+  description: 'Shopboss load balances has identified elevated 5xx errors.  Please
+    investigate. '
+  dimensions:
+    LoadBalancer: app/csb-s-Webho-TRKWCFGU7R3V/2be8e8651d8739f5
+    TargetGroup: targetgroup/csb-s-Webho-9YZX636IXBGE/06d7b17e91c72703
+  evaluation_periods: 2
+  metric: HTTPCode_Target_5XX_Count
+  name: 5xx Server Errors
+  namespace: AWS/ApplicationELB
+  period: 120
+  state: OK
+  statistic: Sum
+  threshold: 100.0
+  treat_missing_data: notBreaching
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanOrEqualToThreshold
+  datapoints_to_alarm: 3
+  description: Created from EC2 Console
+  dimensions:
+    InstanceId: i-03594ec360ca29edc
+  evaluation_periods: 5
+  metric: CPUUtilization
+  name: EC2 CPU Usage 60% Webhost03
+  namespace: AWS/EC2
+  period: 120
+  state: ALARM
+  statistic: Average
+  threshold: 60.0
+  treat_missing_data: not specified
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanOrEqualToThreshold
+  datapoints_to_alarm: 3
+  description: Created from EC2 Console
+  dimensions:
+    InstanceId: i-0d23c577d740198c9
+  evaluation_periods: 5
+  metric: CPUUtilization
+  name: EC2 CPU Usage 60% Webhost04
+  namespace: AWS/EC2
+  period: 300
+  state: ALARM
+  statistic: Average
+  threshold: 70.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanOrEqualToThreshold
+  datapoints_to_alarm: 3
+  description: Created from EC2 Console
+  dimensions:
+    InstanceId: i-020f85e8dd63d693e
+  evaluation_periods: 5
+  metric: CPUUtilization
+  name: EC2 CPU Usage 60% Webhost05
+  namespace: AWS/EC2
+  period: 300
+  state: OK
+  statistic: Average
+  threshold: 70.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanOrEqualToThreshold
+  datapoints_to_alarm: 3
+  description: Created from EC2 Console
+  dimensions:
+    InstanceId: i-037ebcee869758fe1
+  evaluation_periods: 5
+  metric: CPUUtilization
+  name: EC2 CPU Usage 60% Webhost06
+  namespace: AWS/EC2
+  period: 120
+  state: ALARM
+  statistic: Average
+  threshold: 70.0
+  treat_missing_data: missing
+- actions_enabled: false
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanOrEqualToThreshold
+  datapoints_to_alarm: 3
+  description: Created from EC2 Console
+  dimensions:
+    InstanceId: i-08bdad4e7a016bb74
+  evaluation_periods: 5
+  metric: CPUUtilization
+  name: EC2 CPU Usage 60% Webhost07
+  namespace: AWS/EC2
+  period: 300
+  state: INSUFFICIENT_DATA
+  statistic: Average
+  threshold: 60.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: LessThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    FileSystemId: fs-049f97e96fda05c97
+  evaluation_periods: 1
+  metric: FreeStorageCapacityEnterprise
+  name: FSXEnterprise<500GB
+  namespace: AWS/FSx
+  period: 60
+  state: INSUFFICIENT_DATA
+  statistic: Average
+  threshold: 500000000000.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: LessThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    FileSystemId: fs-0c9a8120f0449193a
+  evaluation_periods: 1
+  metric: FreeStorageCapacityProduction
+  name: FSXProduction<1TB
+  namespace: AWS/FSx
+  period: 60
+  state: INSUFFICIENT_DATA
+  statistic: Average
+  threshold: 1000000000000.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: LessThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    FileSystemId: fs-0e4de156d8508792f
+  evaluation_periods: 1
+  metric: FreeStorageCapacityStaging
+  name: FSXStaging<250GB
+  namespace: AWS/FSx
+  period: 60
+  state: INSUFFICIENT_DATA
+  statistic: Average
+  threshold: 250000000000.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: Low free storage capacity alarm - FSx-Auto-Increase-Size-2-fs-0c9a8120f0449193a
+  dimensions:
+    FileSystemId: fs-0c9a8120f0449193a
+  evaluation_periods: 1
+  metric: FreeStorageCapacity
+  name: FSx Free Storage Low Capacity
+  namespace: AWS/FSx
+  period: 60
+  state: OK
+  statistic: Sum
+  threshold: 6118081302040.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: Low free storage capacity alarm - FSx-Auto-Increase-Size-1-fs-049f97e96fda05c97
+  dimensions:
+    FileSystemId: fs-049f97e96fda05c97
+  evaluation_periods: 1
+  metric: FreeStorageCapacity
+  name: FSx Free Storage Low Capacity - Auto Increase
+  namespace: AWS/FSx
+  period: 60
+  state: OK
+  statistic: Sum
+  threshold: 1170000000000.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS CPU Usage Writer 100%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 100.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS CPU Usage Writer 40%
+  namespace: AWS/RDS
+  period: 180
+  state: OK
+  statistic: Average
+  threshold: 40.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS CPU Usage Writer 50%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 50.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS CPU Usage Writer 60%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 60.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS CPU Usage Writer 70%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 70.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS CPU Usage Writer 80%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 80.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS CPU Usage Writer 90%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 90.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production
+  evaluation_periods: 1
+  metric: DBLoad
+  name: RDS Load 30%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 30.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS MS CPU Usage Writer 100%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 100.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS MS CPU Usage Writer 40%
+  namespace: AWS/RDS
+  period: 180
+  state: OK
+  statistic: Average
+  threshold: 40.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS MS CPU Usage Writer 50%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 50.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS MS CPU Usage Writer 60%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 60.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS MS CPU Usage Writer 70%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 70.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS MS CPU Usage Writer 80%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 80.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: CPUUtilization
+  name: RDS MS CPU Usage Writer 90%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 90.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DBInstanceIdentifier: production-ms
+  evaluation_periods: 1
+  metric: DBLoad
+  name: RDS MS Load 30%
+  namespace: AWS/RDS
+  period: 120
+  state: OK
+  statistic: Average
+  threshold: 30.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions:
+    DatabaseClass: db.r5.16xlarge
+  evaluation_periods: 1
+  metric: DatabaseConnections
+  name: RDS-Connections->120
+  namespace: AWS/RDS
+  period: 60
+  state: INSUFFICIENT_DATA
+  statistic: Average
+  threshold: 150.0
+  treat_missing_data: missing
+- actions_enabled: true
+  alarm_actions:
+  - arn:aws:sns:us-east-1:815965276449:ShopBossDev
+  comparison_operator: GreaterThanThreshold
+  datapoints_to_alarm: 1
+  description: ''
+  dimensions: {}
+  evaluation_periods: 1
+  metric: RowsUpdated
+  name: RDS_100_plus_updates
+  namespace: Custom/RDS
+  period: 10
+  state: INSUFFICIENT_DATA
+  statistic: Sum
+  threshold: 100.0
+  treat_missing_data: missing
+
+
